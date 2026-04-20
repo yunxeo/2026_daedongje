@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대동제 Design System — Component Library</title>
+<link href="https://fonts.googleapis.com/css2?family=SUIT:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1e53ff;
+  --primary-pressed: #153bb5;
+  --primary-hover: #1b4ce8;
+  --primary-subtle: #e9eeff;
+  --secondary-a: #7052ff;
+  --secondary-a-pressed: #503ab5;
+  --secondary-a-subtle: #f1eeff;
+  --secondary-b: #ff40a5;
+  --secondary-b-pressed: #b52d75;
+  --secondary-b-subtle: #ffecf6;
+  --error: #ff5a36;
+  --error-subtle: #fff0ec;
+  --warning: #ffb020;
+  --warning-subtle: #fff8e0;
+  --success: #00c070;
+  --success-subtle: #e0fff3;
+  --white: #ffffff;
+  --gray-50: #edeef0;
+  --gray-100: #c7cad0;
+  --gray-200: #acb1ba;
+  --gray-300: #868d9a;
+  --gray-400: #6e7786;
+  --gray-500: #4a5568;
+  --gray-600: #434d5f;
+  --gray-700: #353c4a;
+  --gray-800: #292f39;
+  --gray-900: #1f242c;
+  --text-primary: #1f242c;
+  --text-secondary: #4a5568;
+  --text-disabled: #acb1ba;
+  --bg-primary: #ffffff;
+  --bg-secondary: #edeef0;
+  --border-default: #edeef0;
+  --border-strong: #c7cad0;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-full: 999px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --font: 'SUIT', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: #f5f6f8;
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: 1200px; margin: 0 auto; padding: 40px 32px 80px; }
+
+.page-title {
+  font-size: 32px; font-weight: 800; color: var(--text-primary);
+  letter-spacing: -0.03em; margin-bottom: 4px;
+}
+.page-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 48px; }
+
+.section { margin-bottom: 56px; }
+.section-title {
+  font-size: 11px; font-weight: 700; color: var(--text-secondary);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+
+/* ── PREVIEW CARD ── */
+.preview-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  border: 1px solid var(--border-default);
+}
+.preview-label {
+  font-size: 10px; font-weight: 600; color: var(--text-disabled);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ── PHONE FRAME ── */
+.phone-frame {
+  width: 375px; min-height: 812px;
+  background: var(--white);
+  border-radius: 40px;
+  border: 8px solid var(--gray-800);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255,255,255,0.1);
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+.phone-inner { width: 100%; height: 100%; overflow-y: auto; }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  height: 44px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 20px;
+  background: transparent;
+}
+.status-time { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.status-icons { display: flex; gap: 5px; align-items: center; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  height: 56px; display: flex; align-items: center;
+  padding: 0 4px; background: var(--white);
+  border-bottom: 1px solid var(--border-default);
+}
+.top-bar-btn {
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; background: none; border: none; cursor: pointer;
+}
+.top-bar-title {
+  flex: 1; font-size: 17px; font-weight: 600; color: var(--text-primary);
+  letter-spacing: -0.02em; padding: 0 8px; text-align: center;
+}
+
+/* ── NAV BAR ── */
+.nav-bar {
+  height: 80px; background: var(--white);
+  border-top: 1px solid var(--border-default);
+  display: flex; align-items: flex-start; padding-top: 8px;
+  position: sticky; bottom: 0;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; background: none; border: none; cursor: pointer; padding: 2px 0;
+}
+.nav-label { font-size: 10px; font-weight: 500; }
+.nav-dot {
+  width: 4px; height: 4px; border-radius: 2px;
+  background: var(--primary); margin-top: 1px;
+}
+
+/* ── TAB BAR ── */
+.tab-bar {
+  display: flex; border-bottom: 1px solid var(--border-default);
+  background: var(--white);
+}
+.tab-btn {
+  flex: 1; height: 44px; display: flex; align-items: center;
+  justify-content: center; gap: 4px; background: none; border: none;
+  border-bottom: 2px solid transparent; cursor: pointer;
+  font-family: var(--font); font-size: 14px; font-weight: 400;
+  color: var(--gray-400); transition: all 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn.active {
+  color: var(--primary); font-weight: 600;
+  border-bottom-color: var(--primary);
+}
+
+/* ── CHIP ── */
+.chip {
+  padding: 6px 14px; border-radius: var(--r-full);
+  background: var(--gray-50); border: none; cursor: pointer;
+  font-family: var(--font); font-size: 13px; font-weight: 400;
+  color: var(--gray-500); white-space: nowrap; transition: all 0.15s;
+}
+.chip.active { background: var(--primary); color: var(--white); font-weight: 600; }
+.chip.violet.active { background: var(--secondary-a); }
+.chip.pink.active { background: var(--secondary-b); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: var(--r-full);
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+  white-space: nowrap;
+}
+.badge-primary   { background: var(--primary-subtle); color: var(--primary); }
+.badge-violet    { background: var(--secondary-a-subtle); color: var(--secondary-a); }
+.badge-pink      { background: var(--secondary-b-subtle); color: var(--secondary-b); }
+.badge-error     { background: var(--error-subtle); color: var(--error); }
+.badge-warning   { background: var(--warning-subtle); color: var(--warning); }
+.badge-success   { background: var(--success-subtle); color: var(--success); }
+.badge-gray      { background: var(--gray-50); color: var(--gray-500); }
+.badge-lg { padding: 4px 10px; font-size: 12px; }
+
+/* ── BUTTON ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; border: none; cursor: pointer;
+  font-family: var(--font); font-weight: 600; letter-spacing: -0.02em;
+  transition: all 0.15s; white-space: nowrap;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm { height: 36px; padding: 0 14px; font-size: 13px; border-radius: var(--r-sm); }
+.btn-md { height: 48px; padding: 0 20px; font-size: 15px; border-radius: var(--r-md); }
+.btn-lg { height: 56px; padding: 0 24px; font-size: 16px; border-radius: var(--r-md); }
+.btn-full { width: 100%; }
+.btn-primary { background: var(--primary); color: var(--white); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-primary:active:not(:disabled) { background: var(--primary-pressed); }
+.btn-secondary { background: var(--secondary-a); color: var(--white); }
+.btn-secondary:hover:not(:disabled) { background: var(--secondary-a-pressed); }
+.btn-pink { background: var(--secondary-b); color: var(--white); }
+.btn-pink:hover:not(:disabled) { background: var(--secondary-b-pressed); }
+.btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+.btn-outline:hover:not(:disabled) { background: var(--primary-subtle); }
+.btn-ghost { background: var(--gray-50); color: var(--gray-700); }
+.btn-ghost:hover:not(:disabled) { background: var(--gray-100); }
+.btn-danger { background: var(--error); color: var(--white); }
+
+/* ── INPUT ── */
+.input-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--gray-50); border-radius: var(--r-md);
+  padding: 0 12px; border: 1.5px solid var(--border-default);
+  transition: border-color 0.15s;
+}
+.input-wrap:focus-within { border-color: var(--primary); }
+.input-wrap.error { border-color: var(--error); }
+.input-wrap input, .input-wrap textarea {
+  flex: 1; height: 44px; background: none; border: none; outline: none;
+  font-family: var(--font); font-size: 15px; color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.input-wrap input::placeholder { color: var(--text-disabled); }
+
+/* ── CARD ── */
+.card {
+  background: var(--white); border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid var(--border-default);
+}
+.card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.card-thumb {
+  height: 120px;
+  background: linear-gradient(135deg, var(--primary-subtle) 0%, var(--secondary-a-subtle) 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.card-thumb.wide { height: 160px; }
+.card-body { padding: 10px 12px 12px; }
+.card-title {
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  letter-spacing: -0.02em; margin-top: 6px;
+}
+.card-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.card-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+
+/* ── LIST ITEM ── */
+.list-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--white);
+  border-bottom: 1px solid var(--border-default); cursor: pointer;
+  transition: background 0.1s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-icon {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  background: var(--primary-subtle);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.list-info { flex: 1; min-width: 0; }
+.list-title { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.list-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.list-meta { font-size: 12px; color: var(--gray-300); }
+
+/* ── WAIT BAR ── */
+.wait-bar {
+  padding: 12px 16px; background: var(--white);
+  border-radius: var(--r-md); border: 1px solid var(--border-default);
+}
+.wait-bar-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.wait-bar-label { font-size: 14px; color: var(--gray-600); }
+.wait-bar-value { font-size: 15px; font-weight: 700; }
+.wait-bar-track {
+  height: 8px; background: var(--gray-50);
+  border-radius: var(--r-full); overflow: hidden;
+}
+.wait-bar-fill { height: 100%; border-radius: var(--r-full); transition: width 0.3s; }
+
+/* ── NOTICE ITEM ── */
+.notice-item {
+  padding: 16px; border-bottom: 1px solid var(--border-default);
+  cursor: pointer; background: var(--white); transition: background 0.1s;
+}
+.notice-item:hover { background: var(--gray-50); }
+.notice-row { display: flex; align-items: flex-start; gap: 8px; }
+.notice-title { font-size: 15px; color: var(--text-primary); flex: 1; line-height: 1.5; }
+.notice-date { font-size: 12px; color: var(--gray-300); margin-top: 4px; }
+
+/* ── DIVIDER ── */
+.divider-section {
+  height: 8px; background: var(--gray-50);
+  border-top: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 16px 12px;
+}
+.section-header-title { font-size: 17px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+.section-header-action {
+  font-size: 12px; color: var(--gray-400); background: none;
+  border: none; cursor: pointer; display: flex; align-items: center; gap: 2px;
+}
+
+/* ── LOCATION CHIP ── */
+.loc-chip {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: var(--r-full);
+  font-size: 11px; font-weight: 600;
+}
+.loc-baegyang { background: var(--primary-subtle); color: var(--primary); }
+.loc-hangeul  { background: var(--secondary-a-subtle); color: var(--secondary-a); }
+.loc-notcheon { background: var(--secondary-b-subtle); color: var(--secondary-b); }
+
+/* ── DROPDOWN ── */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; background: var(--white);
+  border: 1.5px solid var(--border-strong); border-radius: var(--r-md);
+  cursor: pointer; font-family: var(--font); font-size: 14px;
+  color: var(--gray-700); min-width: 110px;
+}
+.dropdown-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--white); border: 1.5px solid var(--primary);
+  border-radius: var(--r-md); box-shadow: var(--shadow-md); z-index: 100;
+  overflow: hidden; display: none;
+}
+.dropdown-menu.open { display: block; }
+.dropdown-option {
+  display: block; width: 100%; text-align: left;
+  padding: 10px 12px; background: var(--white); border: none;
+  cursor: pointer; font-family: var(--font); font-size: 14px; color: var(--gray-700);
+  transition: background 0.1s;
+}
+.dropdown-option:hover { background: var(--primary-subtle); color: var(--primary); }
+.dropdown-option.selected { background: var(--primary-subtle); color: var(--primary); font-weight: 600; }
+
+/* ── TOGGLE ── */
+.toggle-wrap { display: flex; align-items: center; gap: 10px; }
+.toggle {
+  position: relative; width: 50px; height: 28px;
+  background: var(--gray-200); border-radius: var(--r-full);
+  cursor: pointer; transition: background 0.2s;
+  border: none; padding: 0;
+}
+.toggle.on { background: var(--primary); }
+.toggle-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--white); transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle.on .toggle-thumb { transform: translateX(22px); }
+.toggle-label { font-size: 14px; color: var(--text-secondary); }
+
+/* ── TYPOGRAPHY SCALE ── */
+.type-display  { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+.type-h1       { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.type-h2       { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; }
+.type-h3       { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; }
+.type-body1    { font-size: 15px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.5; }
+.type-body2    { font-size: 14px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.5; }
+.type-caption  { font-size: 12px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.5; }
+.type-label    { font-size: 11px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.5; }
+
+/* ── COLOR SWATCH ── */
+.swatch-grid { display: flex; flex-direction: column; gap: 4px; }
+.swatch-row { display: flex; gap: 4px; }
+.swatch {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.swatch-label { font-size: 10px; color: var(--text-secondary); margin-top: 3px; text-align: center; font-family: monospace; }
+
+/* ── ICON GRID ── */
+.icon-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.icon-item {
+  width: 64px; display: flex; flex-direction: column; align-items: center;
+  gap: 6px; padding: 12px 8px; background: var(--white);
+  border-radius: var(--r-md); border: 1px solid var(--border-default);
+}
+.icon-name { font-size: 10px; color: var(--text-secondary); text-align: center; }
+
+svg { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div style="margin-bottom: 48px;">
+    <div class="type-display" style="color: var(--primary); margin-bottom: 4px;">대동제</div>
+    <div class="type-h2" style="color: var(--text-primary); margin-bottom: 4px;">Design System — Component Library</div>
+    <div class="type-body2" style="color: var(--text-secondary);">SUIT Variable · Blue #1e53ff · Violet #7052ff · Pink #ff40a5</div>
+  </div>
+
+  <!-- ── 컬러 ── -->
+  <div class="section">
+    <div class="section-title">컬러 팔레트</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:300px;">
+        <div class="preview-label">Brand</div>
+        <div class="row" style="gap:8px;">
+          <div><div class="swatch" style="background:var(--primary);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Primary<br>#1e53ff</div></div>
+          <div><div class="swatch" style="background:var(--secondary-a);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Violet<br>#7052ff</div></div>
+          <div><div class="swatch" style="background:var(--secondary-b);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Pink<br>#ff40a5</div></div>
+          <div><div class="swatch" style="background:var(--error);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Error<br>#ff5a36</div></div>
+          <div><div class="swatch" style="background:var(--warning);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Warning<br>#ffb020</div></div>
+          <div><div class="swatch" style="background:var(--success);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Success<br>#00c070</div></div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:2;min-width:400px;">
+        <div class="preview-label">Blue Scale</div>
+        <div class="row" style="gap:4px;">
+          <div><div class="swatch" style="background:#e9eeff;"></div><div class="swatch-label">50</div></div>
+          <div><div class="swatch" style="background:#b9caff;"></div><div class="swatch-label">100</div></div>
+          <div><div class="swatch" style="background:#98b0ff;"></div><div class="swatch-label">200</div></div>
+          <div><div class="swatch" style="background:#688cff;"></div><div class="swatch-label">300</div></div>
+          <div><div class="swatch" style="background:#4b75ff;"></div><div class="swatch-label">400</div></div>
+          <div><div class="swatch" style="background:#1e53ff;"></div><div class="swatch-label">500</div></div>
+          <div><div class="swatch" style="background:#1b4ce8;"></div><div class="swatch-label">600</div></div>
+          <div><div class="swatch" style="background:#153bb5;"></div><div class="swatch-label">700</div></div>
+          <div><div class="swatch" style="background:#112e8c;"></div><div class="swatch-label">800</div></div>
+          <div><div class="swatch" style="background:#0d236b;"></div><div class="swatch-label">900</div></div>
+        </div>
+        <div class="preview-label" style="margin-top:16px;">Gray Scale</div>
+        <div class="row" style="gap:4px;">
+          <div><div class="swatch" style="background:#edeef0;"></div><div class="swatch-label">50</div></div>
+          <div><div class="swatch" style="background:#c7cad0;"></div><div class="swatch-label">100</div></div>
+          <div><div class="swatch" style="background:#acb1ba;"></div><div class="swatch-label">200</div></div>
+          <div><div class="swatch" style="background:#868d9a;"></div><div class="swatch-label">300</div></div>
+          <div><div class="swatch" style="background:#6e7786;"></div><div class="swatch-label">400</div></div>
+          <div><div class="swatch" style="background:#4a5568;"></div><div class="swatch-label">500</div></div>
+          <div><div class="swatch" style="background:#434d5f;"></div><div class="swatch-label">600</div></div>
+          <div><div class="swatch" style="background:#353c4a;"></div><div class="swatch-label">700</div></div>
+          <div><div class="swatch" style="background:#292f39;"></div><div class="swatch-label">800</div></div>
+          <div><div class="swatch" style="background:#1f242c;"></div><div class="swatch-label">900</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 타이포그래피 ── -->
+  <div class="section">
+    <div class="section-title">타이포그래피</div>
+    <div class="preview-card">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-display">대동제 2026</span>
+          <span class="type-caption" style="color:var(--text-disabled);">display · 28px · 800</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h1">공연 타임테이블</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-1 · 24px · 700</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h2">인기 부스</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-2 · 20px · 700</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h3">치킨 세상</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-3 · 17px · 600</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-body1">경영학과 · 부스 A-03</span>
+          <span class="type-caption" style="color:var(--text-disabled);">body-1 · 15px · 500</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-body2">운영 시간 12:00 — 20:00</span>
+          <span class="type-caption" style="color:var(--text-disabled);">body-2 · 14px · 400</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-caption">현재 대기 4팀</span>
+          <span class="type-caption" style="color:var(--text-disabled);">caption · 12px · 400</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;">
+          <span class="type-label" style="text-transform:uppercase;letter-spacing:0.08em;">LIVE NOW</span>
+          <span class="type-caption" style="color:var(--text-disabled);">label · 11px · 500</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 버튼 ── -->
+  <div class="section">
+    <div class="section-title">버튼</div>
+    <div class="row">
+      <div class="preview-card">
+        <div class="preview-label">Size</div>
+        <div class="col">
+          <button class="btn btn-primary btn-lg">Large 버튼</button>
+          <button class="btn btn-primary btn-md">Medium 버튼</button>
+          <button class="btn btn-primary btn-sm">Small 버튼</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Variant</div>
+        <div class="col">
+          <button class="btn btn-primary btn-md">Primary</button>
+          <button class="btn btn-secondary btn-md">Secondary (Violet)</button>
+          <button class="btn btn-pink btn-md">Secondary (Pink)</button>
+          <button class="btn btn-outline btn-md">Outline</button>
+          <button class="btn btn-ghost btn-md">Ghost</button>
+          <button class="btn btn-danger btn-md">Danger</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">State</div>
+        <div class="col">
+          <button class="btn btn-primary btn-md">Default</button>
+          <button class="btn btn-primary btn-md" disabled>Disabled</button>
+          <button class="btn btn-primary btn-md btn-full">Full Width</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 뱃지 / 칩 ── -->
+  <div class="section">
+    <div class="section-title">뱃지 & 칩</div>
+    <div class="row">
+      <div class="preview-card">
+        <div class="preview-label">Badge</div>
+        <div class="row" style="flex-wrap:wrap;">
+          <span class="badge badge-primary badge-lg">Primary</span>
+          <span class="badge badge-violet badge-lg">Violet</span>
+          <span class="badge badge-pink badge-lg">Pink</span>
+          <span class="badge badge-error badge-lg">Error</span>
+          <span class="badge badge-warning badge-lg">Warning</span>
+          <span class="badge badge-success badge-lg">Success</span>
+          <span class="badge badge-gray badge-lg">Gray</span>
+          <span class="badge badge-primary">NEW</span>
+          <span class="badge badge-error">마감</span>
+          <span class="badge badge-warning">대기중</span>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Chip (Filter)</div>
+        <div class="row">
+          <button class="chip active" onclick="toggleChip(this)">전체</button>
+          <button class="chip" onclick="toggleChip(this)">5/21(수)</button>
+          <button class="chip" onclick="toggleChip(this)">5/22(목)</button>
+          <button class="chip violet" onclick="toggleChip(this)">신촌</button>
+          <button class="chip pink" onclick="toggleChip(this)">국제캠</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Location Chip</div>
+        <div class="row">
+          <span class="loc-chip loc-baegyang">백양로</span>
+          <span class="loc-chip loc-hangeul">한글탑</span>
+          <span class="loc-chip loc-notcheon">노천극장</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 탭바 / 토글 ── -->
+  <div class="section">
+    <div class="section-title">탭바 & 토글</div>
+    <div class="row">
+      <div class="preview-card" style="flex:2;min-width:300px;">
+        <div class="preview-label">Tab Bar</div>
+        <div class="tab-bar" style="border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border-default);">
+          <button class="tab-btn active" onclick="switchTab(this)">타임테이블</button>
+          <button class="tab-btn" onclick="switchTab(this)">응원 메시지</button>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="tab-bar" style="border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border-default);">
+            <button class="tab-btn active" onclick="switchTab(this)">예약하기</button>
+            <button class="tab-btn" onclick="switchTab(this)">예약 조회</button>
+            <button class="tab-btn" onclick="switchTab(this)">대기 현황</button>
+          </div>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Toggle</div>
+        <div class="col" style="gap:16px;">
+          <div class="toggle-wrap">
+            <button class="toggle on" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">예약 접수 중</span>
+          </div>
+          <div class="toggle-wrap">
+            <button class="toggle" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">예약 마감</span>
+          </div>
+          <div class="toggle-wrap">
+            <button class="toggle on" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">알림 허용</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 인풋 ── -->
+  <div class="section">
+    <div class="section-title">인풋 필드</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:280px;">
+        <div class="preview-label">Default</div>
+        <div class="col">
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="부스명, 단체명, 메뉴 검색">
+          </div>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input placeholder="예약자 이름">
+          </div>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <input placeholder="010-0000-0000" type="tel">
+          </div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:280px;">
+        <div class="preview-label">States</div>
+        <div class="col">
+          <div class="input-wrap" style="border-color:var(--primary);">
+            <input value="입력 중..." style="color:var(--text-primary);">
+          </div>
+          <div class="input-wrap error">
+            <input value="잘못된 형식" style="color:var(--error);">
+          </div>
+          <div class="input-wrap" style="opacity:0.5;">
+            <input placeholder="비활성 상태" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 드롭다운 ── -->
+  <div class="section">
+    <div class="section-title">드롭다운</div>
+    <div class="preview-card">
+      <div class="preview-label">Dropdown</div>
+      <div class="row">
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleDropdown(this)">
+            <span style="flex:1;text-align:left;">일자 선택</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-option selected">5/21 (수)</button>
+            <button class="dropdown-option">5/22 (목)</button>
+            <button class="dropdown-option">5/23 (금)</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleDropdown(this)">
+            <span style="flex:1;text-align:left;">장소 선택</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-option">백양로</button>
+            <button class="dropdown-option selected">한글탑</button>
+            <button class="dropdown-option">노천극장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 카드 ── -->
+  <div class="section">
+    <div class="section-title">카드</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;">
+        <div class="preview-label">세로형 (부스/공연)</div>
+        <div class="row" style="flex-wrap:nowrap;overflow-x:auto;">
+          <div class="card" style="width:180px;flex-shrink:0;">
+            <div class="card-thumb">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              <div style="position:absolute;top:8px;left:8px;"><span class="badge badge-error">마감</span></div>
+            </div>
+            <div class="card-body">
+              <span class="loc-chip loc-baegyang">백양로</span>
+              <div class="card-title">치킨 세상</div>
+              <div class="card-sub">경영학과</div>
+              <div class="card-tags">
+                <span class="badge badge-gray">#닭강정</span>
+                <span class="badge badge-gray">#치킨</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="width:180px;flex-shrink:0;">
+            <div class="card-thumb" style="background:linear-gradient(135deg,var(--secondary-a-subtle),var(--secondary-b-subtle));">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--secondary-a)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <div style="position:absolute;top:8px;left:8px;"><span class="badge badge-primary" style="background:#ff2d55;color:#fff;font-size:10px;padding:2px 7px;">● LIVE</span></div>
+            </div>
+            <div class="card-body">
+              <span class="loc-chip loc-hangeul">한글탑</span>
+              <div class="card-title">연세 밴드부 YB</div>
+              <div class="card-sub">18:00 — 18:40</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;">
+        <div class="preview-label">가로형 (리스트용)</div>
+        <div class="card" style="display:flex;flex-direction:row;">
+          <div style="width:80px;height:80px;background:linear-gradient(135deg,var(--primary-subtle),var(--secondary-a-subtle));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/></svg>
+          </div>
+          <div style="padding:12px;flex:1;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span class="type-body1" style="color:var(--text-primary);">호프 한 잔</span>
+              <span class="badge badge-warning">대기 2팀</span>
+            </div>
+            <div class="type-caption" style="color:var(--gray-400);">사회학과 · 부스 #B-07</div>
+            <div style="display:flex;gap:4px;margin-top:6px;">
+              <span class="badge badge-gray">#맥주</span>
+              <span class="badge badge-gray">#파전</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 리스트 / 섹션 ── -->
+  <div class="section">
+    <div class="section-title">리스트 아이템 & 섹션</div>
+    <div class="preview-card" style="padding:0;overflow:hidden;">
+      <div class="section-header">
+        <span class="section-header-title">공지사항</span>
+        <button class="section-header-action">전체보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="notice-item">
+        <div class="notice-row">
+          <span class="badge badge-primary">NEW</span>
+          <span class="notice-title">2026 대동제 일정 최종 안내</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="notice-date">2026.05.15</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-row">
+          <span class="notice-title">셔틀버스 운행 안내 (국제캠 ↔ 신촌)</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="notice-date">2026.05.18</div>
+      </div>
+      <div class="divider-section"></div>
+      <div class="list-item">
+        <div class="list-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <div class="list-info">
+          <div class="list-title">분실물 안내</div>
+          <div class="list-sub">습득 분실물 목록 확인</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="list-item">
+        <div class="list-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><circle cx="12" cy="3" r="1.5" fill="var(--primary)"/><path d="M5 8h14M12 8v13M8 21l4-5 4 5"/></svg>
+        </div>
+        <div class="list-info">
+          <div class="list-title">배리어프리 이동 동선</div>
+          <div class="list-sub">휠체어·이동 약자 안내 지도</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 대기 바 ── -->
+  <div class="section">
+    <div class="section-title">대기 현황 바</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--success);">2팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:20%;background:var(--success);"></div></div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--warning);">6팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:60%;background:var(--warning);"></div></div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--error);">9팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:90%;background:var(--error);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 네비게이션 / 앱바 ── -->
+  <div class="section">
+    <div class="section-title">네비게이션 바 & 앱바</div>
+    <div class="row">
+      <div>
+        <div class="phone-frame" style="min-height:auto;height:auto;">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="var(--text-primary)"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="1" width="3" height="11" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="var(--text-primary)" stroke-opacity="0.35"/><rect x="2" y="2" width="16" height="8" rx="2" fill="var(--text-primary)"/></svg>
+            </div>
+          </div>
+          <div class="top-bar">
+            <button class="top-bar-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </button>
+            <span class="top-bar-title">부스 상세</span>
+            <button class="top-bar-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+          </div>
+          <div style="height:120px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;">
+            <span class="type-caption" style="color:var(--text-disabled);">콘텐츠 영역</span>
+          </div>
+          <div class="nav-bar">
+            <button class="nav-item" onclick="switchNav(this,'홈','home')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+              <span class="nav-label" style="color:var(--primary);">홈</span>
+              <div class="nav-dot"></div>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'부스','booth')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">부스</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'공연','music')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">공연</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'예약','ticket')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M2 9a1 1 0 011-1h1a2 2 0 100-4H3a1 1 0 01-1-1V4a1 1 0 011-1h18a1 1 0 011 1v1a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1V9z"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">예약</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'더보기','menu')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">더보기</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 아이콘 ── -->
+  <div class="section">
+    <div class="section-title">아이콘</div>
+    <div class="preview-card">
+      <div class="icon-grid">
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span class="icon-name">home</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg><span class="icon-name">map</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M2 9a1 1 0 011-1h1a2 2 0 100-4H3a1 1 0 01-1-1V4a1 1 0 011-1h18a1 1 0 011 1v1a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1V9z"/></svg><span class="icon-name">ticket</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="icon-name">bell</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="icon-name">search</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="icon-name">pin</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="icon-name">clock</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="icon-name">info</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="icon-name">user</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg><span class="icon-name">filter</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span class="icon-name">check</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="icon-name">music</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="icon-name">heart</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="icon-name">feedback</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="icon-name">share</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg><span class="icon-name">booth</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleChip(el) {
+  const siblings = el.parentElement.querySelectorAll('.chip');
+  siblings.forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function switchTab(el) {
+  const siblings = el.parentElement.querySelectorAll('.tab-btn');
+  siblings.forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function toggleBtn(el) {
+  el.classList.toggle('on');
+}
+function toggleDropdown(btn) {
+  const menu = btn.nextElementSibling;
+  menu.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dropdown')) {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+});
+function switchNav(el) {
+  const navItems = el.closest('.nav-bar').querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    const label = item.querySelector('.nav-label');
+    const dot = item.querySelector('.nav-dot');
+    const svgs = item.querySelectorAll('svg');
+    svgs.forEach(s => s.setAttribute('stroke', 'var(--gray-300)'));
+    label.style.color = 'var(--gray-300)';
+    if (dot) dot.remove();
+  });
+  const label = el.querySelector('.nav-label');
+  const svgs = el.querySelectorAll('svg');
+  svgs.forEach(s => s.setAttribute('stroke', 'var(--primary)'));
+  label.style.color = 'var(--primary)';
+  if (!el.querySelector('.nav-dot')) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot';
+    el.appendChild(dot);
+  }
+}
+</script>
+</body>
+</html>

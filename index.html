@@ -1,1224 +1,946 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>2026 대동제</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대동제 Design System — Component Library</title>
+<link href="https://fonts.googleapis.com/css2?family=SUIT:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f0f0f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'SUIT', sans-serif; }
-  #root { width: 390px; height: 844px; background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.25); position: relative; }
-  @media (max-width: 430px) {
-    body { background: white; align-items: flex-start; }
-    #root { width: 100%; height: 100vh; border-radius: 0; box-shadow: none; }
-  }
-  @keyframes pulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:0.3;transform:scale(1.3)} }
+:root {
+  --primary: #1e53ff;
+  --primary-pressed: #153bb5;
+  --primary-hover: #1b4ce8;
+  --primary-subtle: #e9eeff;
+  --secondary-a: #7052ff;
+  --secondary-a-pressed: #503ab5;
+  --secondary-a-subtle: #f1eeff;
+  --secondary-b: #ff40a5;
+  --secondary-b-pressed: #b52d75;
+  --secondary-b-subtle: #ffecf6;
+  --error: #ff5a36;
+  --error-subtle: #fff0ec;
+  --warning: #ffb020;
+  --warning-subtle: #fff8e0;
+  --success: #00c070;
+  --success-subtle: #e0fff3;
+  --white: #ffffff;
+  --gray-50: #edeef0;
+  --gray-100: #c7cad0;
+  --gray-200: #acb1ba;
+  --gray-300: #868d9a;
+  --gray-400: #6e7786;
+  --gray-500: #4a5568;
+  --gray-600: #434d5f;
+  --gray-700: #353c4a;
+  --gray-800: #292f39;
+  --gray-900: #1f242c;
+  --text-primary: #1f242c;
+  --text-secondary: #4a5568;
+  --text-disabled: #acb1ba;
+  --bg-primary: #ffffff;
+  --bg-secondary: #edeef0;
+  --border-default: #edeef0;
+  --border-strong: #c7cad0;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-full: 999px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --font: 'SUIT', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: #f5f6f8;
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: 1200px; margin: 0 auto; padding: 40px 32px 80px; }
+
+.page-title {
+  font-size: 32px; font-weight: 800; color: var(--text-primary);
+  letter-spacing: -0.03em; margin-bottom: 4px;
+}
+.page-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 48px; }
+
+.section { margin-bottom: 56px; }
+.section-title {
+  font-size: 11px; font-weight: 700; color: var(--text-secondary);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+
+/* ── PREVIEW CARD ── */
+.preview-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  border: 1px solid var(--border-default);
+}
+.preview-label {
+  font-size: 10px; font-weight: 600; color: var(--text-disabled);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ── PHONE FRAME ── */
+.phone-frame {
+  width: 375px; min-height: 812px;
+  background: var(--white);
+  border-radius: 40px;
+  border: 8px solid var(--gray-800);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255,255,255,0.1);
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+.phone-inner { width: 100%; height: 100%; overflow-y: auto; }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  height: 44px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 20px;
+  background: transparent;
+}
+.status-time { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.status-icons { display: flex; gap: 5px; align-items: center; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  height: 56px; display: flex; align-items: center;
+  padding: 0 4px; background: var(--white);
+  border-bottom: 1px solid var(--border-default);
+}
+.top-bar-btn {
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; background: none; border: none; cursor: pointer;
+}
+.top-bar-title {
+  flex: 1; font-size: 17px; font-weight: 600; color: var(--text-primary);
+  letter-spacing: -0.02em; padding: 0 8px; text-align: center;
+}
+
+/* ── NAV BAR ── */
+.nav-bar {
+  height: 80px; background: var(--white);
+  border-top: 1px solid var(--border-default);
+  display: flex; align-items: flex-start; padding-top: 8px;
+  position: sticky; bottom: 0;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; background: none; border: none; cursor: pointer; padding: 2px 0;
+}
+.nav-label { font-size: 10px; font-weight: 500; }
+.nav-dot {
+  width: 4px; height: 4px; border-radius: 2px;
+  background: var(--primary); margin-top: 1px;
+}
+
+/* ── TAB BAR ── */
+.tab-bar {
+  display: flex; border-bottom: 1px solid var(--border-default);
+  background: var(--white);
+}
+.tab-btn {
+  flex: 1; height: 44px; display: flex; align-items: center;
+  justify-content: center; gap: 4px; background: none; border: none;
+  border-bottom: 2px solid transparent; cursor: pointer;
+  font-family: var(--font); font-size: 14px; font-weight: 400;
+  color: var(--gray-400); transition: all 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn.active {
+  color: var(--primary); font-weight: 600;
+  border-bottom-color: var(--primary);
+}
+
+/* ── CHIP ── */
+.chip {
+  padding: 6px 14px; border-radius: var(--r-full);
+  background: var(--gray-50); border: none; cursor: pointer;
+  font-family: var(--font); font-size: 13px; font-weight: 400;
+  color: var(--gray-500); white-space: nowrap; transition: all 0.15s;
+}
+.chip.active { background: var(--primary); color: var(--white); font-weight: 600; }
+.chip.violet.active { background: var(--secondary-a); }
+.chip.pink.active { background: var(--secondary-b); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: var(--r-full);
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+  white-space: nowrap;
+}
+.badge-primary   { background: var(--primary-subtle); color: var(--primary); }
+.badge-violet    { background: var(--secondary-a-subtle); color: var(--secondary-a); }
+.badge-pink      { background: var(--secondary-b-subtle); color: var(--secondary-b); }
+.badge-error     { background: var(--error-subtle); color: var(--error); }
+.badge-warning   { background: var(--warning-subtle); color: var(--warning); }
+.badge-success   { background: var(--success-subtle); color: var(--success); }
+.badge-gray      { background: var(--gray-50); color: var(--gray-500); }
+.badge-lg { padding: 4px 10px; font-size: 12px; }
+
+/* ── BUTTON ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; border: none; cursor: pointer;
+  font-family: var(--font); font-weight: 600; letter-spacing: -0.02em;
+  transition: all 0.15s; white-space: nowrap;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm { height: 36px; padding: 0 14px; font-size: 13px; border-radius: var(--r-sm); }
+.btn-md { height: 48px; padding: 0 20px; font-size: 15px; border-radius: var(--r-md); }
+.btn-lg { height: 56px; padding: 0 24px; font-size: 16px; border-radius: var(--r-md); }
+.btn-full { width: 100%; }
+.btn-primary { background: var(--primary); color: var(--white); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-primary:active:not(:disabled) { background: var(--primary-pressed); }
+.btn-secondary { background: var(--secondary-a); color: var(--white); }
+.btn-secondary:hover:not(:disabled) { background: var(--secondary-a-pressed); }
+.btn-pink { background: var(--secondary-b); color: var(--white); }
+.btn-pink:hover:not(:disabled) { background: var(--secondary-b-pressed); }
+.btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+.btn-outline:hover:not(:disabled) { background: var(--primary-subtle); }
+.btn-ghost { background: var(--gray-50); color: var(--gray-700); }
+.btn-ghost:hover:not(:disabled) { background: var(--gray-100); }
+.btn-danger { background: var(--error); color: var(--white); }
+
+/* ── INPUT ── */
+.input-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--gray-50); border-radius: var(--r-md);
+  padding: 0 12px; border: 1.5px solid var(--border-default);
+  transition: border-color 0.15s;
+}
+.input-wrap:focus-within { border-color: var(--primary); }
+.input-wrap.error { border-color: var(--error); }
+.input-wrap input, .input-wrap textarea {
+  flex: 1; height: 44px; background: none; border: none; outline: none;
+  font-family: var(--font); font-size: 15px; color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.input-wrap input::placeholder { color: var(--text-disabled); }
+
+/* ── CARD ── */
+.card {
+  background: var(--white); border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid var(--border-default);
+}
+.card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.card-thumb {
+  height: 120px;
+  background: linear-gradient(135deg, var(--primary-subtle) 0%, var(--secondary-a-subtle) 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.card-thumb.wide { height: 160px; }
+.card-body { padding: 10px 12px 12px; }
+.card-title {
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  letter-spacing: -0.02em; margin-top: 6px;
+}
+.card-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.card-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+
+/* ── LIST ITEM ── */
+.list-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--white);
+  border-bottom: 1px solid var(--border-default); cursor: pointer;
+  transition: background 0.1s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-icon {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  background: var(--primary-subtle);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.list-info { flex: 1; min-width: 0; }
+.list-title { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.list-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.list-meta { font-size: 12px; color: var(--gray-300); }
+
+/* ── WAIT BAR ── */
+.wait-bar {
+  padding: 12px 16px; background: var(--white);
+  border-radius: var(--r-md); border: 1px solid var(--border-default);
+}
+.wait-bar-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.wait-bar-label { font-size: 14px; color: var(--gray-600); }
+.wait-bar-value { font-size: 15px; font-weight: 700; }
+.wait-bar-track {
+  height: 8px; background: var(--gray-50);
+  border-radius: var(--r-full); overflow: hidden;
+}
+.wait-bar-fill { height: 100%; border-radius: var(--r-full); transition: width 0.3s; }
+
+/* ── NOTICE ITEM ── */
+.notice-item {
+  padding: 16px; border-bottom: 1px solid var(--border-default);
+  cursor: pointer; background: var(--white); transition: background 0.1s;
+}
+.notice-item:hover { background: var(--gray-50); }
+.notice-row { display: flex; align-items: flex-start; gap: 8px; }
+.notice-title { font-size: 15px; color: var(--text-primary); flex: 1; line-height: 1.5; }
+.notice-date { font-size: 12px; color: var(--gray-300); margin-top: 4px; }
+
+/* ── DIVIDER ── */
+.divider-section {
+  height: 8px; background: var(--gray-50);
+  border-top: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 16px 12px;
+}
+.section-header-title { font-size: 17px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+.section-header-action {
+  font-size: 12px; color: var(--gray-400); background: none;
+  border: none; cursor: pointer; display: flex; align-items: center; gap: 2px;
+}
+
+/* ── LOCATION CHIP ── */
+.loc-chip {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: var(--r-full);
+  font-size: 11px; font-weight: 600;
+}
+.loc-baegyang { background: var(--primary-subtle); color: var(--primary); }
+.loc-hangeul  { background: var(--secondary-a-subtle); color: var(--secondary-a); }
+.loc-notcheon { background: var(--secondary-b-subtle); color: var(--secondary-b); }
+
+/* ── DROPDOWN ── */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; background: var(--white);
+  border: 1.5px solid var(--border-strong); border-radius: var(--r-md);
+  cursor: pointer; font-family: var(--font); font-size: 14px;
+  color: var(--gray-700); min-width: 110px;
+}
+.dropdown-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--white); border: 1.5px solid var(--primary);
+  border-radius: var(--r-md); box-shadow: var(--shadow-md); z-index: 100;
+  overflow: hidden; display: none;
+}
+.dropdown-menu.open { display: block; }
+.dropdown-option {
+  display: block; width: 100%; text-align: left;
+  padding: 10px 12px; background: var(--white); border: none;
+  cursor: pointer; font-family: var(--font); font-size: 14px; color: var(--gray-700);
+  transition: background 0.1s;
+}
+.dropdown-option:hover { background: var(--primary-subtle); color: var(--primary); }
+.dropdown-option.selected { background: var(--primary-subtle); color: var(--primary); font-weight: 600; }
+
+/* ── TOGGLE ── */
+.toggle-wrap { display: flex; align-items: center; gap: 10px; }
+.toggle {
+  position: relative; width: 50px; height: 28px;
+  background: var(--gray-200); border-radius: var(--r-full);
+  cursor: pointer; transition: background 0.2s;
+  border: none; padding: 0;
+}
+.toggle.on { background: var(--primary); }
+.toggle-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--white); transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle.on .toggle-thumb { transform: translateX(22px); }
+.toggle-label { font-size: 14px; color: var(--text-secondary); }
+
+/* ── TYPOGRAPHY SCALE ── */
+.type-display  { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+.type-h1       { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.type-h2       { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; }
+.type-h3       { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; }
+.type-body1    { font-size: 15px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.5; }
+.type-body2    { font-size: 14px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.5; }
+.type-caption  { font-size: 12px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.5; }
+.type-label    { font-size: 11px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.5; }
+
+/* ── COLOR SWATCH ── */
+.swatch-grid { display: flex; flex-direction: column; gap: 4px; }
+.swatch-row { display: flex; gap: 4px; }
+.swatch {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.swatch-label { font-size: 10px; color: var(--text-secondary); margin-top: 3px; text-align: center; font-family: monospace; }
+
+/* ── ICON GRID ── */
+.icon-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.icon-item {
+  width: 64px; display: flex; flex-direction: column; align-items: center;
+  gap: 6px; padding: 12px 8px; background: var(--white);
+  border-radius: var(--r-md); border: 1px solid var(--border-default);
+}
+.icon-name { font-size: 10px; color: var(--text-secondary); text-align: center; }
+
+svg { display: block; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-// ── Design Tokens ──
-const DS = {
-  colors: {
-    primary:'#1e53ff', primaryPressed:'#153bb5', primarySubtle:'#e9eeff',
-    secondaryA:'#7052ff', secondaryAPressed:'#503ab5', secondaryASubtle:'#f1eeff',
-    secondaryB:'#ff40a5', secondaryBPressed:'#b52d75', secondaryBSubtle:'#ffecf6',
-    error:'#ff5a36', errorPressed:'#b52e10', errorSubtle:'#fff0ec',
-    warning:'#ffb020', warningSubtle:'#fff8e0',
-    success:'#00c070', successSubtle:'#e0fff3',
-    white:'#ffffff',
-    gray50:'#edeef0', gray100:'#c7cad0', gray200:'#acb1ba', gray300:'#868d9a',
-    gray400:'#6e7786', gray500:'#4a5568', gray600:'#434d5f', gray700:'#353c4a',
-    gray800:'#292f39', gray900:'#1f242c',
-    borderDefault:'#edeef0', borderStrong:'#c7cad0',
-  },
-  type: {
-    display:  { fontSize:28, fontWeight:800, lineHeight:'120%', letterSpacing:'-0.02em' },
-    heading1: { fontSize:24, fontWeight:700, lineHeight:'120%', letterSpacing:'-0.02em' },
-    heading2: { fontSize:20, fontWeight:700, lineHeight:'130%', letterSpacing:'-0.02em' },
-    heading3: { fontSize:17, fontWeight:600, lineHeight:'130%', letterSpacing:'-0.02em' },
-    body1:    { fontSize:15, fontWeight:500, lineHeight:'150%', letterSpacing:'-0.02em' },
-    body2:    { fontSize:14, fontWeight:400, lineHeight:'150%', letterSpacing:'-0.02em' },
-    caption:  { fontSize:12, fontWeight:400, lineHeight:'150%', letterSpacing:'-0.02em' },
-    label:    { fontSize:11, fontWeight:500, lineHeight:'150%', letterSpacing:'-0.02em' },
-  },
-  radius:{ sm:6, md:10, lg:14, xl:20, full:999 },
-  shadow:{ sm:'0 1px 4px rgba(0,0,0,0.08)', md:'0 4px 16px rgba(0,0,0,0.10)', lg:'0 8px 32px rgba(0,0,0,0.12)' },
-  font:"'SUIT', sans-serif",
-};
-const C = DS.colors, T = DS.type, R = DS.radius;
+<div class="page">
 
-// ── Icons ──
-function Icon({ name, size=20, color=C.gray900, style={} }) {
-  const s = { width:size, height:size, flexShrink:0, ...style };
-  const icons = {
-    home: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>,
-    map: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>,
-    ticket: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M2 9a1 1 0 011-1h1a2 2 0 100-4H3a1 1 0 01-1-1V4a1 1 0 011-1h18a1 1 0 011 1v1a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1V9z"/></svg>,
-    bell: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
-    menu: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
-    close: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-    chevronRight: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polyline points="9 18 15 12 9 6"/></svg>,
-    chevronDown: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polyline points="6 9 12 15 18 9"/></svg>,
-    chevronLeft: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polyline points="15 18 9 12 15 6"/></svg>,
-    search: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-    pin: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
-    clock: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-    star: <svg viewBox="0 0 24 24" fill={color} stroke={color} strokeWidth="1.2" style={s}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-    starEmpty: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-    info: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
-    user: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-    phone: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
-    accessibility: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="12" cy="3" r="1.5" fill={color}/><path d="M5 8h14M12 8v13M8 21l4-5 4 5"/></svg>,
-    filter: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
-    check: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" style={s}><polyline points="20 6 9 17 4 12"/></svg>,
-    people: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
-    heart: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>,
-    arrowLeft: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-    share: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
-    lost: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>,
-    feedback: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
-    music: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>,
-    booth: <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" style={s}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>,
-  };
-  return icons[name] || <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="8" fill={color} opacity="0.3"/></svg>;
-}
+  <div style="margin-bottom: 48px;">
+    <div class="type-display" style="color: var(--primary); margin-bottom: 4px;">대동제</div>
+    <div class="type-h2" style="color: var(--text-primary); margin-bottom: 4px;">Design System — Component Library</div>
+    <div class="type-body2" style="color: var(--text-secondary);">SUIT Variable · Blue #1e53ff · Violet #7052ff · Pink #ff40a5</div>
+  </div>
 
-// ── Status Bar ──
-function StatusBar({ dark=false }) {
-  const col = dark ? '#fff' : C.gray900;
-  return (
-    <div style={{ height:44, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 20px', background:'transparent' }}>
-      <span style={{ fontFamily:DS.font, fontSize:13, fontWeight:600, color:col }}>9:41</span>
-      <div style={{ display:'flex', gap:5, alignItems:'center' }}>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill={col}><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="1" width="3" height="11" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
-        <svg width="15" height="12" viewBox="0 0 15 12" fill={col}><path d="M7.5 2.4C5.2 2.4 3.1 3.3 1.6 4.8L0 3.2C2 1.2 4.6 0 7.5 0s5.5 1.2 7.5 3.2l-1.6 1.6C11.9 3.3 9.8 2.4 7.5 2.4z" opacity="0.4"/><path d="M7.5 5.8C6 5.8 4.7 6.4 3.7 7.4L2.1 5.8C3.6 4.3 5.4 3.4 7.5 3.4s3.9.9 5.4 2.4l-1.6 1.6C10.3 6.4 9 5.8 7.5 5.8z"/><circle cx="7.5" cy="10" r="2"/></svg>
-        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke={col} strokeOpacity="0.35"/><rect x="2" y="2" width="16" height="8" rx="2" fill={col}/><path d="M23 4.5v3a2 2 0 000-3z" fill={col} opacity="0.4"/></svg>
-      </div>
-    </div>
-  );
-}
-
-// ── Top Bar ──
-function TopBar({ title, onBack, onSearch, onShare, dark=false, transparent=false }) {
-  const bg = transparent ? 'transparent' : (dark ? C.gray900 : C.white);
-  const col = dark || transparent ? C.white : C.gray900;
-  return (
-    <div style={{ height:56, display:'flex', alignItems:'center', padding:'0 4px', background:bg, borderBottom: transparent?'none':`1px solid ${C.borderDefault}` }}>
-      {onBack && <button onClick={onBack} style={{ width:44,height:44,display:'flex',alignItems:'center',justifyContent:'center',background:'none',border:'none',cursor:'pointer' }}><Icon name="arrowLeft" color={col} size={22}/></button>}
-      {!onBack && <div style={{ width:16 }}/>}
-      <span style={{ flex:1, fontFamily:DS.font, fontSize:17, fontWeight:600, color:col, textAlign:onBack?'center':'left', padding:'0 8px' }}>{title}</span>
-      <div style={{ display:'flex' }}>
-        {onSearch && <button onClick={onSearch} style={{ width:44,height:44,display:'flex',alignItems:'center',justifyContent:'center',background:'none',border:'none',cursor:'pointer' }}><Icon name="search" color={col} size={22}/></button>}
-        {onShare && <button onClick={onShare} style={{ width:44,height:44,display:'flex',alignItems:'center',justifyContent:'center',background:'none',border:'none',cursor:'pointer' }}><Icon name="share" color={col} size={22}/></button>}
-        {!onSearch && !onShare && <div style={{ width:16 }}/>}
-      </div>
-    </div>
-  );
-}
-
-// ── Nav Bar ──
-function NavBar({ active='home', onChange }) {
-  const items = [
-    { key:'home', label:'홈', icon:'home' },
-    { key:'booth', label:'부스', icon:'booth' },
-    { key:'timetable', label:'공연', icon:'music' },
-    { key:'reservation', label:'예약', icon:'ticket' },
-    { key:'more', label:'더보기', icon:'menu' },
-  ];
-  return (
-    <div style={{ height:80, background:C.white, borderTop:`1px solid ${C.borderDefault}`, display:'flex', alignItems:'flex-start', paddingTop:8, flexShrink:0 }}>
-      {items.map(it => {
-        const isActive = it.key === active;
-        return (
-          <button key={it.key} onClick={() => onChange?.(it.key)} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:2, background:'none', border:'none', cursor:'pointer', padding:'2px 0' }}>
-            <Icon name={it.icon} size={24} color={isActive ? C.primary : C.gray300}/>
-            <span style={{ fontFamily:DS.font, fontSize:10, color:isActive ? C.primary : C.gray300 }}>{it.label}</span>
-            {isActive && <div style={{ width:4, height:4, borderRadius:2, background:C.primary, marginTop:1 }}/>}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// ── Tab Bar ──
-function TabBar({ tabs, active, onChange, style={} }) {
-  return (
-    <div style={{ display:'flex', borderBottom:`1px solid ${C.borderDefault}`, background:C.white, flexShrink:0, ...style }}>
-      {tabs.map(tab => {
-        const isActive = tab.key === active;
-        return (
-          <button key={tab.key} onClick={() => onChange?.(tab.key)} style={{ flex:1, height:44, display:'flex', alignItems:'center', justifyContent:'center', gap:4, background:'none', border:'none', borderBottom:isActive?`2px solid ${C.primary}`:'2px solid transparent', cursor:'pointer', padding:0 }}>
-            <span style={{ fontFamily:DS.font, fontSize:14, color:isActive?C.primary:C.gray400, fontWeight:isActive?600:400 }}>{tab.label}</span>
-            {tab.count != null && <span style={{ fontFamily:DS.font, fontSize:11, background:isActive?C.primarySubtle:C.gray50, color:isActive?C.primary:C.gray400, padding:'1px 6px', borderRadius:R.full }}>{tab.count}</span>}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// ── Chip ──
-function Chip({ label, active, onClick, color }) {
-  const bg = active ? (color || C.primary) : C.gray50;
-  const fg = active ? C.white : C.gray500;
-  return (
-    <button onClick={onClick} style={{ padding:'6px 14px', borderRadius:R.full, background:bg, border:'none', cursor:'pointer', fontFamily:DS.font, fontSize:13, color:fg, whiteSpace:'nowrap', fontWeight:active?600:400 }}>{label}</button>
-  );
-}
-
-// ── Badge ──
-function Badge({ label, variant='primary', size='md' }) {
-  const variants = {
-    primary:{ bg:C.primarySubtle, color:C.primary },
-    secondary:{ bg:C.secondaryASubtle, color:C.secondaryA },
-    pink:{ bg:C.secondaryBSubtle, color:C.secondaryB },
-    error:{ bg:C.errorSubtle, color:C.error },
-    warning:{ bg:C.warningSubtle, color:C.warning },
-    success:{ bg:C.successSubtle, color:C.success },
-    gray:{ bg:C.gray50, color:C.gray500 },
-  };
-  const v = variants[variant] || variants.primary;
-  const sz = size==='sm' ? { padding:'2px 8px', fontSize:11 } : { padding:'4px 10px', fontSize:12 };
-  return <span style={{ fontFamily:DS.font, ...sz, borderRadius:R.full, background:v.bg, color:v.color, fontWeight:600 }}>{label}</span>;
-}
-
-// ── Button ──
-function Btn({ label, variant='primary', size='md', icon, fullWidth, onClick, disabled }) {
-  const variants = {
-    primary:{ bg:C.primary, color:C.white, border:'none' },
-    secondary:{ bg:C.secondaryA, color:C.white, border:'none' },
-    outline:{ bg:'transparent', color:C.primary, border:`1.5px solid ${C.primary}` },
-    ghost:{ bg:C.gray50, color:C.gray700, border:'none' },
-    danger:{ bg:C.error, color:C.white, border:'none' },
-  };
-  const sizes = {
-    sm:{ height:36, padding:'0 14px', fontSize:13, borderRadius:R.sm },
-    md:{ height:48, padding:'0 20px', fontSize:15, borderRadius:R.md },
-    lg:{ height:56, padding:'0 24px', fontSize:16, borderRadius:R.md },
-  };
-  const v = variants[variant] || variants.primary;
-  const sz = sizes[size] || sizes.md;
-  return (
-    <button onClick={onClick} disabled={disabled} style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, background:v.bg, color:v.color, border:v.border||'none', borderRadius:sz.borderRadius, height:sz.height, padding:sz.padding, fontFamily:DS.font, fontSize:sz.fontSize, fontWeight:600, letterSpacing:'-0.02em', cursor:disabled?'not-allowed':'pointer', width:fullWidth?'100%':'auto', opacity:disabled?0.5:1, boxSizing:'border-box' }}>
-      {icon && <Icon name={icon} size={18} color={v.color}/>}
-      {label}
-    </button>
-  );
-}
-
-// ── LocationChip ──
-function LocationChip({ location }) {
-  const colors = { '백양로':{ bg:C.primarySubtle, color:C.primary }, '한글탑':{ bg:C.secondaryASubtle, color:C.secondaryA }, '노천극장':{ bg:C.secondaryBSubtle, color:C.secondaryB } };
-  const s = colors[location] || { bg:C.gray50, color:C.gray500 };
-  return <span style={{ fontFamily:DS.font, padding:'3px 8px', borderRadius:R.full, background:s.bg, color:s.color, fontWeight:600, fontSize:11 }}>{location}</span>;
-}
-
-// ── WaitBar ──
-function WaitBar({ current, total, label }) {
-  const pct = Math.min(100, (current/total)*100);
-  const color = pct>80 ? C.error : pct>50 ? C.warning : C.success;
-  return (
-    <div style={{ padding:'12px 16px', background:C.white, borderRadius:R.md, border:`1px solid ${C.borderDefault}` }}>
-      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
-        <span style={{ fontFamily:DS.font, fontSize:14, color:C.gray600 }}>{label||'현재 대기'}</span>
-        <span style={{ fontFamily:DS.font, fontSize:15, fontWeight:700, color }}>{current}팀</span>
-      </div>
-      <div style={{ height:8, background:C.gray50, borderRadius:R.full, overflow:'hidden' }}>
-        <div style={{ height:'100%', width:`${pct}%`, background:color, borderRadius:R.full, transition:'width 0.3s' }}/>
-      </div>
-    </div>
-  );
-}
-
-// ── Divider ──
-function Divider({ label }) {
-  return (
-    <div style={{ height:8, background:C.gray50, borderTop:`1px solid ${C.borderDefault}`, borderBottom:`1px solid ${C.borderDefault}`, display:'flex', alignItems:'center', padding:'0 16px', flexShrink:0 }}>
-      {label && <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400, fontWeight:600 }}>{label}</span>}
-    </div>
-  );
-}
-
-// ── SectionHeader ──
-function SectionHeader({ title, action, actionLabel='전체보기' }) {
-  return (
-    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 16px 12px' }}>
-      <span style={{ fontFamily:DS.font, fontSize:17, fontWeight:600, color:C.gray900 }}>{title}</span>
-      {action && <button onClick={action} style={{ background:'none', border:'none', cursor:'pointer', fontFamily:DS.font, fontSize:12, color:C.gray400, display:'flex', alignItems:'center', gap:2 }}>{actionLabel}<Icon name="chevronRight" size={14} color={C.gray400}/></button>}
-    </div>
-  );
-}
-
-// ── NoticeItem ──
-function NoticeItem({ title, date, isNew, onClick }) {
-  return (
-    <div onClick={onClick} style={{ padding:'16px', borderBottom:`1px solid ${C.borderDefault}`, cursor:'pointer', background:C.white }}>
-      <div style={{ display:'flex', alignItems:'flex-start', gap:8 }}>
-        {isNew && <Badge label="NEW" variant="primary" size="sm"/>}
-        <span style={{ fontFamily:DS.font, fontSize:15, color:C.gray900, flex:1, lineHeight:'150%' }}>{title}</span>
-        <Icon name="chevronRight" size={16} color={C.gray300} style={{ marginTop:2, flexShrink:0 }}/>
-      </div>
-      <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray300, marginTop:4, display:'block' }}>{date}</span>
-    </div>
-  );
-}
-
-// ── Input ──
-function Input({ placeholder, value, onChange, icon, type='text' }) {
-  return (
-    <div style={{ display:'flex', alignItems:'center', gap:8, background:C.gray50, borderRadius:R.md, padding:'0 12px', border:`1.5px solid ${C.borderDefault}` }}>
-      {icon && <Icon name={icon} size={18} color={C.gray300}/>}
-      <input type={type} placeholder={placeholder} value={value} onChange={e => onChange?.(e.target.value)} style={{ flex:1, height:44, background:'none', border:'none', outline:'none', fontFamily:DS.font, fontSize:15, color:C.gray900 }}/>
-    </div>
-  );
-}
-
-// ── Dropdown ──
-function Dropdown({ label, options, value, onChange }) {
-  const [open, setOpen] = React.useState(false);
-  const selected = options.find(o => o.value===value) || options[0];
-  return (
-    <div style={{ position:'relative' }}>
-      <button onClick={() => setOpen(!open)} style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 12px', background:C.white, border:`1.5px solid ${open?C.primary:C.borderStrong}`, borderRadius:R.md, cursor:'pointer', fontFamily:DS.font, fontSize:14, color:C.gray700, minWidth:110 }}>
-        <span style={{ flex:1, textAlign:'left' }}>{selected?.label||label}</span>
-        <Icon name="chevronDown" size={16} color={C.gray400}/>
-      </button>
-      {open && (
-        <div style={{ position:'absolute', top:'100%', left:0, right:0, background:C.white, border:`1.5px solid ${C.primary}`, borderRadius:R.md, boxShadow:DS.shadow.md, zIndex:100, marginTop:4, overflow:'hidden' }}>
-          {options.map(o => (
-            <button key={o.value} onClick={() => { onChange?.(o.value); setOpen(false); }} style={{ display:'block', width:'100%', textAlign:'left', padding:'10px 12px', background:o.value===value?C.primarySubtle:C.white, border:'none', cursor:'pointer', fontFamily:DS.font, fontSize:14, color:o.value===value?C.primary:C.gray700, fontWeight:o.value===value?600:400 }}>
-              {o.label}
-            </button>
-          ))}
+  <!-- ── 컬러 ── -->
+  <div class="section">
+    <div class="section-title">컬러 팔레트</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:300px;">
+        <div class="preview-label">Brand</div>
+        <div class="row" style="gap:8px;">
+          <div><div class="swatch" style="background:var(--primary);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Primary<br>#1e53ff</div></div>
+          <div><div class="swatch" style="background:var(--secondary-a);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Violet<br>#7052ff</div></div>
+          <div><div class="swatch" style="background:var(--secondary-b);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Pink<br>#ff40a5</div></div>
+          <div><div class="swatch" style="background:var(--error);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Error<br>#ff5a36</div></div>
+          <div><div class="swatch" style="background:var(--warning);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Warning<br>#ffb020</div></div>
+          <div><div class="swatch" style="background:var(--success);width:48px;height:48px;border-radius:var(--r-md);"></div><div class="swatch-label">Success<br>#00c070</div></div>
         </div>
-      )}
-    </div>
-  );
-}
-
-// ── ListItem ──
-function ListItem({ title, subtitle, badge, badgeVariant, icon, onClick }) {
-  return (
-    <div onClick={onClick} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}`, cursor:onClick?'pointer':'default' }}>
-      {icon && <div style={{ width:40, height:40, borderRadius:R.md, background:C.primarySubtle, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name={icon} size={20} color={C.primary}/></div>}
-      <div style={{ flex:1, minWidth:0 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-          <span style={{ fontFamily:DS.font, fontSize:15, color:C.gray900, fontWeight:500 }}>{title}</span>
-          {badge && <Badge label={badge} variant={badgeVariant||'primary'} size="sm"/>}
-        </div>
-        {subtitle && <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400, marginTop:2 }}>{subtitle}</div>}
       </div>
-      {onClick && <Icon name="chevronRight" size={18} color={C.gray300}/>}
-    </div>
-  );
-}
-
-// ── BoothCard ──
-function BoothCard({ title, location, category, days, desc, scraps, status, saved, onSave, onClick }) {
-  const statusColors = { '운영중':C.success, '운영종료':C.gray300, '마감임박':C.warning };
-  const sc = statusColors[status] || C.gray300;
-  const photos = ['#e9eeff','#f1eeff','#ffecf6'];
-  return (
-    <div onClick={onClick} style={{ background:C.white, borderBottom:`1px solid ${C.borderDefault}`, padding:'16px', cursor:'pointer', display:'flex', gap:14, alignItems:'flex-start' }}>
-      <div style={{ flex:1, minWidth:0 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }}>
-          {status && <span style={{ width:7, height:7, borderRadius:4, background:sc, display:'inline-block', flexShrink:0 }}/>}
-          <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{category} · {location}</span>
+      <div class="preview-card" style="flex:2;min-width:400px;">
+        <div class="preview-label">Blue Scale</div>
+        <div class="row" style="gap:4px;">
+          <div><div class="swatch" style="background:#e9eeff;"></div><div class="swatch-label">50</div></div>
+          <div><div class="swatch" style="background:#b9caff;"></div><div class="swatch-label">100</div></div>
+          <div><div class="swatch" style="background:#98b0ff;"></div><div class="swatch-label">200</div></div>
+          <div><div class="swatch" style="background:#688cff;"></div><div class="swatch-label">300</div></div>
+          <div><div class="swatch" style="background:#4b75ff;"></div><div class="swatch-label">400</div></div>
+          <div><div class="swatch" style="background:#1e53ff;"></div><div class="swatch-label">500</div></div>
+          <div><div class="swatch" style="background:#1b4ce8;"></div><div class="swatch-label">600</div></div>
+          <div><div class="swatch" style="background:#153bb5;"></div><div class="swatch-label">700</div></div>
+          <div><div class="swatch" style="background:#112e8c;"></div><div class="swatch-label">800</div></div>
+          <div><div class="swatch" style="background:#0d236b;"></div><div class="swatch-label">900</div></div>
         </div>
-        <div style={{ fontFamily:DS.font, fontSize:16, fontWeight:700, color:C.gray900, marginBottom:4, letterSpacing:'-0.02em', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{title}</div>
-        {desc && <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray500, marginBottom:8, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{desc}</div>}
-        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-          {days && <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{days}</span>}
-          <div style={{ display:'flex', alignItems:'center', gap:3 }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill={C.primary}><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-            <span style={{ fontFamily:DS.font, fontSize:12, color:C.primary, fontWeight:600 }}>{scraps||0}</span>
+        <div class="preview-label" style="margin-top:16px;">Gray Scale</div>
+        <div class="row" style="gap:4px;">
+          <div><div class="swatch" style="background:#edeef0;"></div><div class="swatch-label">50</div></div>
+          <div><div class="swatch" style="background:#c7cad0;"></div><div class="swatch-label">100</div></div>
+          <div><div class="swatch" style="background:#acb1ba;"></div><div class="swatch-label">200</div></div>
+          <div><div class="swatch" style="background:#868d9a;"></div><div class="swatch-label">300</div></div>
+          <div><div class="swatch" style="background:#6e7786;"></div><div class="swatch-label">400</div></div>
+          <div><div class="swatch" style="background:#4a5568;"></div><div class="swatch-label">500</div></div>
+          <div><div class="swatch" style="background:#434d5f;"></div><div class="swatch-label">600</div></div>
+          <div><div class="swatch" style="background:#353c4a;"></div><div class="swatch-label">700</div></div>
+          <div><div class="swatch" style="background:#292f39;"></div><div class="swatch-label">800</div></div>
+          <div><div class="swatch" style="background:#1f242c;"></div><div class="swatch-label">900</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 타이포그래피 ── -->
+  <div class="section">
+    <div class="section-title">타이포그래피</div>
+    <div class="preview-card">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-display">대동제 2026</span>
+          <span class="type-caption" style="color:var(--text-disabled);">display · 28px · 800</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h1">공연 타임테이블</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-1 · 24px · 700</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h2">인기 부스</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-2 · 20px · 700</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-h3">치킨 세상</span>
+          <span class="type-caption" style="color:var(--text-disabled);">heading-3 · 17px · 600</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-body1">경영학과 · 부스 A-03</span>
+          <span class="type-caption" style="color:var(--text-disabled);">body-1 · 15px · 500</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-body2">운영 시간 12:00 — 20:00</span>
+          <span class="type-caption" style="color:var(--text-disabled);">body-2 · 14px · 400</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default);">
+          <span class="type-caption">현재 대기 4팀</span>
+          <span class="type-caption" style="color:var(--text-disabled);">caption · 12px · 400</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:16px;">
+          <span class="type-label" style="text-transform:uppercase;letter-spacing:0.08em;">LIVE NOW</span>
+          <span class="type-caption" style="color:var(--text-disabled);">label · 11px · 500</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 버튼 ── -->
+  <div class="section">
+    <div class="section-title">버튼</div>
+    <div class="row">
+      <div class="preview-card">
+        <div class="preview-label">Size</div>
+        <div class="col">
+          <button class="btn btn-primary btn-lg">Large 버튼</button>
+          <button class="btn btn-primary btn-md">Medium 버튼</button>
+          <button class="btn btn-primary btn-sm">Small 버튼</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Variant</div>
+        <div class="col">
+          <button class="btn btn-primary btn-md">Primary</button>
+          <button class="btn btn-secondary btn-md">Secondary (Violet)</button>
+          <button class="btn btn-pink btn-md">Secondary (Pink)</button>
+          <button class="btn btn-outline btn-md">Outline</button>
+          <button class="btn btn-ghost btn-md">Ghost</button>
+          <button class="btn btn-danger btn-md">Danger</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">State</div>
+        <div class="col">
+          <button class="btn btn-primary btn-md">Default</button>
+          <button class="btn btn-primary btn-md" disabled>Disabled</button>
+          <button class="btn btn-primary btn-md btn-full">Full Width</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 뱃지 / 칩 ── -->
+  <div class="section">
+    <div class="section-title">뱃지 & 칩</div>
+    <div class="row">
+      <div class="preview-card">
+        <div class="preview-label">Badge</div>
+        <div class="row" style="flex-wrap:wrap;">
+          <span class="badge badge-primary badge-lg">Primary</span>
+          <span class="badge badge-violet badge-lg">Violet</span>
+          <span class="badge badge-pink badge-lg">Pink</span>
+          <span class="badge badge-error badge-lg">Error</span>
+          <span class="badge badge-warning badge-lg">Warning</span>
+          <span class="badge badge-success badge-lg">Success</span>
+          <span class="badge badge-gray badge-lg">Gray</span>
+          <span class="badge badge-primary">NEW</span>
+          <span class="badge badge-error">마감</span>
+          <span class="badge badge-warning">대기중</span>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Chip (Filter)</div>
+        <div class="row">
+          <button class="chip active" onclick="toggleChip(this)">전체</button>
+          <button class="chip" onclick="toggleChip(this)">5/21(수)</button>
+          <button class="chip" onclick="toggleChip(this)">5/22(목)</button>
+          <button class="chip violet" onclick="toggleChip(this)">신촌</button>
+          <button class="chip pink" onclick="toggleChip(this)">국제캠</button>
+        </div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-label">Location Chip</div>
+        <div class="row">
+          <span class="loc-chip loc-baegyang">백양로</span>
+          <span class="loc-chip loc-hangeul">한글탑</span>
+          <span class="loc-chip loc-notcheon">노천극장</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 탭바 / 토글 ── -->
+  <div class="section">
+    <div class="section-title">탭바 & 토글</div>
+    <div class="row">
+      <div class="preview-card" style="flex:2;min-width:300px;">
+        <div class="preview-label">Tab Bar</div>
+        <div class="tab-bar" style="border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border-default);">
+          <button class="tab-btn active" onclick="switchTab(this)">타임테이블</button>
+          <button class="tab-btn" onclick="switchTab(this)">응원 메시지</button>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="tab-bar" style="border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border-default);">
+            <button class="tab-btn active" onclick="switchTab(this)">예약하기</button>
+            <button class="tab-btn" onclick="switchTab(this)">예약 조회</button>
+            <button class="tab-btn" onclick="switchTab(this)">대기 현황</button>
           </div>
         </div>
       </div>
-      <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6, flexShrink:0 }}>
-        <button onClick={e => { e.stopPropagation(); onSave?.(); }} style={{ background:'none', border:'none', cursor:'pointer', padding:4 }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill={saved?C.primary:'none'} stroke={saved?C.primary:C.gray300} strokeWidth="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+      <div class="preview-card">
+        <div class="preview-label">Toggle</div>
+        <div class="col" style="gap:16px;">
+          <div class="toggle-wrap">
+            <button class="toggle on" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">예약 접수 중</span>
+          </div>
+          <div class="toggle-wrap">
+            <button class="toggle" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">예약 마감</span>
+          </div>
+          <div class="toggle-wrap">
+            <button class="toggle on" onclick="toggleBtn(this)"><div class="toggle-thumb"></div></button>
+            <span class="toggle-label">알림 허용</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 인풋 ── -->
+  <div class="section">
+    <div class="section-title">인풋 필드</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:280px;">
+        <div class="preview-label">Default</div>
+        <div class="col">
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="부스명, 단체명, 메뉴 검색">
+          </div>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input placeholder="예약자 이름">
+          </div>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <input placeholder="010-0000-0000" type="tel">
+          </div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:280px;">
+        <div class="preview-label">States</div>
+        <div class="col">
+          <div class="input-wrap" style="border-color:var(--primary);">
+            <input value="입력 중..." style="color:var(--text-primary);">
+          </div>
+          <div class="input-wrap error">
+            <input value="잘못된 형식" style="color:var(--error);">
+          </div>
+          <div class="input-wrap" style="opacity:0.5;">
+            <input placeholder="비활성 상태" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 드롭다운 ── -->
+  <div class="section">
+    <div class="section-title">드롭다운</div>
+    <div class="preview-card">
+      <div class="preview-label">Dropdown</div>
+      <div class="row">
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleDropdown(this)">
+            <span style="flex:1;text-align:left;">일자 선택</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-option selected">5/21 (수)</button>
+            <button class="dropdown-option">5/22 (목)</button>
+            <button class="dropdown-option">5/23 (금)</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleDropdown(this)">
+            <span style="flex:1;text-align:left;">장소 선택</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-option">백양로</button>
+            <button class="dropdown-option selected">한글탑</button>
+            <button class="dropdown-option">노천극장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 카드 ── -->
+  <div class="section">
+    <div class="section-title">카드</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;">
+        <div class="preview-label">세로형 (부스/공연)</div>
+        <div class="row" style="flex-wrap:nowrap;overflow-x:auto;">
+          <div class="card" style="width:180px;flex-shrink:0;">
+            <div class="card-thumb">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              <div style="position:absolute;top:8px;left:8px;"><span class="badge badge-error">마감</span></div>
+            </div>
+            <div class="card-body">
+              <span class="loc-chip loc-baegyang">백양로</span>
+              <div class="card-title">치킨 세상</div>
+              <div class="card-sub">경영학과</div>
+              <div class="card-tags">
+                <span class="badge badge-gray">#닭강정</span>
+                <span class="badge badge-gray">#치킨</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="width:180px;flex-shrink:0;">
+            <div class="card-thumb" style="background:linear-gradient(135deg,var(--secondary-a-subtle),var(--secondary-b-subtle));">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--secondary-a)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <div style="position:absolute;top:8px;left:8px;"><span class="badge badge-primary" style="background:#ff2d55;color:#fff;font-size:10px;padding:2px 7px;">● LIVE</span></div>
+            </div>
+            <div class="card-body">
+              <span class="loc-chip loc-hangeul">한글탑</span>
+              <div class="card-title">연세 밴드부 YB</div>
+              <div class="card-sub">18:00 — 18:40</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;">
+        <div class="preview-label">가로형 (리스트용)</div>
+        <div class="card" style="display:flex;flex-direction:row;">
+          <div style="width:80px;height:80px;background:linear-gradient(135deg,var(--primary-subtle),var(--secondary-a-subtle));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/></svg>
+          </div>
+          <div style="padding:12px;flex:1;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span class="type-body1" style="color:var(--text-primary);">호프 한 잔</span>
+              <span class="badge badge-warning">대기 2팀</span>
+            </div>
+            <div class="type-caption" style="color:var(--gray-400);">사회학과 · 부스 #B-07</div>
+            <div style="display:flex;gap:4px;margin-top:6px;">
+              <span class="badge badge-gray">#맥주</span>
+              <span class="badge badge-gray">#파전</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 리스트 / 섹션 ── -->
+  <div class="section">
+    <div class="section-title">리스트 아이템 & 섹션</div>
+    <div class="preview-card" style="padding:0;overflow:hidden;">
+      <div class="section-header">
+        <span class="section-header-title">공지사항</span>
+        <button class="section-header-action">전체보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <div style={{ display:'flex', gap:3 }}>
-          {photos.map((bg,i) => (
-            <div key={i} style={{ width:60, height:60, borderRadius:R.sm, background:bg, display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <Icon name="booth" size={20} color={[C.primary,C.secondaryA,C.secondaryB][i]}/>
-            </div>
-          ))}
+      </div>
+      <div class="notice-item">
+        <div class="notice-row">
+          <span class="badge badge-primary">NEW</span>
+          <span class="notice-title">2026 대동제 일정 최종 안내</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="notice-date">2026.05.15</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-row">
+          <span class="notice-title">셔틀버스 운행 안내 (국제캠 ↔ 신촌)</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="notice-date">2026.05.18</div>
+      </div>
+      <div class="divider-section"></div>
+      <div class="list-item">
+        <div class="list-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <div class="list-info">
+          <div class="list-title">분실물 안내</div>
+          <div class="list-sub">습득 분실물 목록 확인</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="list-item">
+        <div class="list-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><circle cx="12" cy="3" r="1.5" fill="var(--primary)"/><path d="M5 8h14M12 8v13M8 21l4-5 4 5"/></svg>
+        </div>
+        <div class="list-info">
+          <div class="list-title">배리어프리 이동 동선</div>
+          <div class="list-sub">휠체어·이동 약자 안내 지도</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 대기 바 ── -->
+  <div class="section">
+    <div class="section-title">대기 현황 바</div>
+    <div class="row">
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--success);">2팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:20%;background:var(--success);"></div></div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--warning);">6팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:60%;background:var(--warning);"></div></div>
+        </div>
+      </div>
+      <div class="preview-card" style="flex:1;min-width:240px;">
+        <div class="wait-bar">
+          <div class="wait-bar-header">
+            <span class="wait-bar-label">현재 대기</span>
+            <span class="wait-bar-value" style="color:var(--error);">9팀</span>
+          </div>
+          <div class="wait-bar-track"><div class="wait-bar-fill" style="width:90%;background:var(--error);"></div></div>
         </div>
       </div>
     </div>
-  );
-}
+  </div>
 
-// ── FilterSheet ──
-function FilterSheet({ open, onClose, onApply }) {
-  const [cat, setCat] = React.useState([]);
-  const [days, setDays] = React.useState([]);
-  const [loc, setLoc] = React.useState([]);
-  const toggle = (arr, setArr, v) => setArr(prev => prev.includes(v) ? prev.filter(x=>x!==v) : [...prev,v]);
-  const ChipSel = ({ label, active, onClick }) => (
-    <button onClick={onClick} style={{ padding:'8px 16px', borderRadius:R.full, background:active?C.primary:C.gray50, border:`1.5px solid ${active?C.primary:C.borderDefault}`, color:active?C.white:C.gray700, fontFamily:DS.font, fontSize:13, fontWeight:active?600:400, cursor:'pointer' }}>{label}</button>
-  );
-  if (!open) return null;
-  return (
-    <div style={{ position:'absolute', inset:0, zIndex:200 }}>
-      <div onClick={onClose} style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.4)' }}/>
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, background:C.white, borderRadius:`${R.xl}px ${R.xl}px 0 0`, padding:'0 0 32px' }}>
-        <div style={{ width:40, height:4, borderRadius:2, background:C.gray100, margin:'12px auto 20px' }}/>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 20px 16px' }}>
-          <span style={{ fontFamily:DS.font, fontSize:17, fontWeight:600, color:C.gray900 }}>필터</span>
-          <button onClick={() => { setCat([]); setDays([]); setLoc([]); }} style={{ background:'none', border:'none', cursor:'pointer', fontFamily:DS.font, fontSize:12, color:C.gray400 }}>초기화</button>
-        </div>
-        {[
-          { label:'카테고리', options:['음식','공예','게임','체험','포토','굿즈'], state:cat, set:setCat },
-          { label:'요일', options:['수','목','금'], state:days, set:setDays },
-          { label:'위치', options:['백양로','한글탑','노천극장','학생회관'], state:loc, set:setLoc },
-        ].map(section => (
-          <div key={section.label} style={{ padding:'12px 20px', borderTop:`1px solid ${C.borderDefault}` }}>
-            <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:10 }}>{section.label}</div>
-            <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-              {section.options.map(o => <ChipSel key={o} label={o} active={section.state.includes(o)} onClick={() => toggle(section.state, section.set, o)}/>)}
+  <!-- ── 네비게이션 / 앱바 ── -->
+  <div class="section">
+    <div class="section-title">네비게이션 바 & 앱바</div>
+    <div class="row">
+      <div>
+        <div class="phone-frame" style="min-height:auto;height:auto;">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="var(--text-primary)"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="1" width="3" height="11" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="var(--text-primary)" stroke-opacity="0.35"/><rect x="2" y="2" width="16" height="8" rx="2" fill="var(--text-primary)"/></svg>
             </div>
           </div>
-        ))}
-        <div style={{ padding:'16px 20px 0' }}>
-          <Btn label="부스 보기" variant="primary" size="lg" fullWidth onClick={() => { onApply?.({cat,days,loc}); onClose?.(); }}/>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ════════════════════════════════════════
-// SCREENS
-// ════════════════════════════════════════
-
-// ── Home ──
-function HomeScreen({ onNav }) {
-  const [saved, setSaved] = React.useState([]);
-  const scraps = [
-    { title:'문과대 붕어빵', color:C.primary },
-    { title:'행운팔찌', color:C.secondaryA },
-    { title:'멋사밴드', color:C.secondaryB },
-    { title:'팝콘 공장', color:C.success },
-  ];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}` }}>
-        <span style={{ fontFamily:DS.font, fontWeight:800, fontSize:18, color:C.primary, letterSpacing:'-0.03em' }}>대동제</span>
-        <div style={{ display:'flex', gap:4 }}>
-          <button style={{ width:40, height:40, background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="search" size={22} color={C.gray700}/></button>
-          <button onClick={() => onNav('menu')} style={{ width:40, height:40, background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="menu" size={22} color={C.gray700}/></button>
-        </div>
-      </div>
-      <div style={{ flex:1, overflowY:'auto', background:C.gray50 }}>
-        {/* 배너 */}
-        <div style={{ background:`linear-gradient(135deg, ${C.primary} 0%, ${C.secondaryA} 100%)`, padding:'24px 20px 28px' }}>
-          <div style={{ fontFamily:DS.font, fontSize:12, color:'rgba(255,255,255,0.7)', marginBottom:4 }}>2026.05.20 – 22 · 연세대학교</div>
-          <div style={{ fontFamily:DS.font, fontWeight:800, fontSize:26, color:'white', lineHeight:'130%', letterSpacing:'-0.03em' }}>2026 연세대학교<br/>대동제</div>
-          <div style={{ display:'flex', gap:8, marginTop:16 }}>
-            <button onClick={() => onNav('booth')} style={{ padding:'8px 16px', background:'rgba(255,255,255,0.2)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:R.full, color:'white', fontFamily:DS.font, fontSize:13, fontWeight:600, cursor:'pointer' }}>부스 보기</button>
-            <button onClick={() => onNav('timetable')} style={{ padding:'8px 16px', background:'rgba(255,255,255,0.2)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:R.full, color:'white', fontFamily:DS.font, fontSize:13, fontWeight:600, cursor:'pointer' }}>공연 일정</button>
-          </div>
-        </div>
-        {/* 스크랩 */}
-        <div style={{ background:C.white, padding:'20px 16px', marginBottom:8 }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
-            <span style={{ fontFamily:DS.font, fontSize:17, fontWeight:600, color:C.gray900 }}>스크랩 ({scraps.length})</span>
-            <button style={{ background:'none', border:'none', cursor:'pointer', fontFamily:DS.font, fontSize:12, color:C.gray400 }}>더보기</button>
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-            {scraps.map((s,i) => (
-              <div key={i} style={{ height:72, borderRadius:R.md, background:s.color, display:'flex', alignItems:'flex-end', padding:'10px', overflow:'hidden', position:'relative' }}>
-                <div style={{ position:'absolute', inset:0, opacity:0.15, background:'repeating-linear-gradient(45deg,white,white 2px,transparent 2px,transparent 10px)' }}/>
-                <span style={{ fontFamily:DS.font, fontSize:12, fontWeight:700, color:'white', position:'relative' }}>{s.title}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* 퀵메뉴 */}
-        <div style={{ background:C.white, padding:'16px', marginBottom:8 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:4 }}>
-            {[{icon:'map',label:'지도',key:'map'},{icon:'bell',label:'공지',key:'notice'},{icon:'lost',label:'분실물',key:'lost'},{icon:'accessibility',label:'배리어\n프리',key:'barrier'},{icon:'feedback',label:'피드백',key:'feedback'}].map(it => (
-              <button key={it.key} onClick={() => onNav(it.key)} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4, padding:'10px 4px', background:'none', border:'none', cursor:'pointer' }}>
-                <div style={{ width:44, height:44, borderRadius:R.md, background:C.gray50, display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name={it.icon} size={20} color={C.gray600}/></div>
-                <span style={{ fontFamily:DS.font, fontSize:10, color:C.gray600, whiteSpace:'pre', textAlign:'center', lineHeight:'140%' }}>{it.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        {/* 인기 부스 */}
-        <div style={{ background:C.white, marginBottom:8 }}>
-          <SectionHeader title="🔥 인기 부스" action={() => onNav('booth')}/>
-          {[{title:'문과대 붕어빵',category:'음식',location:'백양로·포스코03',desc:'이렇게 맛있는 분식은 처음일걸...',scraps:879,status:'운영중'},{title:'행운팔찌',category:'공예',location:'한글탑·포스코02',desc:'하나하나 수작업으로 만든 팔찌',scraps:900,status:'운영중'},{title:'멋쟁이사자모양키링',category:'굿즈',location:'한글탑·포스코02',desc:'과잠 무섭지 나 사자모양 키링',scraps:879,status:'마감임박'}].map((b,i) => (
-            <BoothCard key={i} {...b} saved={saved.includes(i)} onSave={() => setSaved(prev => prev.includes(i)?prev.filter(x=>x!==i):[...prev,i])} onClick={() => onNav('boothDetail')}/>
-          ))}
-        </div>
-        {/* 오늘 공연 */}
-        <div style={{ background:C.white, marginBottom:8 }}>
-          <SectionHeader title="🎤 오늘의 공연" action={() => onNav('timetable')}/>
-          {[{time:'18:00',name:'오프닝 세레모니',location:'노천극장',duration:'60분'},{time:'19:30',name:'LIKELION BAND',location:'백양로 무대',duration:'90분'}].map((p,i) => (
-            <div key={i} onClick={() => onNav('performanceDetail')} style={{ display:'flex', gap:14, padding:'14px 16px', borderBottom:`1px solid ${C.borderDefault}`, cursor:'pointer', alignItems:'center' }}>
-              <div style={{ width:52, flexShrink:0 }}>
-                <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:700, color:C.primary }}>{p.time}</div>
-              </div>
-              <div style={{ flex:1 }}>
-                <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray900, marginBottom:3 }}>{p.name}</div>
-                <div style={{ display:'flex', gap:6 }}><LocationChip location={p.location}/><Badge label={p.duration} variant="gray" size="sm"/></div>
-              </div>
-              <Icon name="chevronRight" size={16} color={C.gray300}/>
-            </div>
-          ))}
-        </div>
-      </div>
-      <NavBar active="home" onChange={onNav}/>
-    </div>
-  );
-}
-
-// ── Booth List ──
-function BoothListScreen({ onNav }) {
-  const [activeDate, setDate] = React.useState('d1');
-  const [filterOpen, setFilterOpen] = React.useState(false);
-  const [savedItems, setSaved] = React.useState([]);
-  const [sortVal, setSort] = React.useState('popular');
-  const dates = [{key:'d1',day:'수',date:'20'},{key:'d2',day:'목',date:'21'},{key:'d3',day:'금',date:'22'}];
-  const booths = [
-    {title:'문과대 붕어빵',category:'음식',location:'백양로·포스코03',days:'수·목',desc:'이렇게 맛있는 분식은 처음일걸... 우리 떡볶이 짱 유명함.',scraps:879,status:'운영중'},
-    {title:'행운팔찌',category:'공예',location:'한글탑·포스코02',days:'수·목',desc:'하나하나 수작업으로 만든... 100% 핸드메이드 팔찌입니다',scraps:900,status:'운영중'},
-    {title:'멋쟁이사자모양키링',category:'굿즈',location:'한글탑·포스코02',days:'수·목·금',desc:'과잠 무섭지 나 사자모양 키링',scraps:879,status:'마감임박'},
-    {title:'VR 체험관',category:'체험',location:'백양로·학생회관',days:'금',desc:'최신 VR 기기로 즐기는 특별한 체험',scraps:234,status:'운영중'},
-    {title:'포토존 스튜디오',category:'포토',location:'노천극장 앞',days:'수·목·금',desc:'추억을 남겨보세요 📸',scraps:567,status:'운영중'},
-  ];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%', position:'relative' }}>
-      <StatusBar/>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}` }}>
-        <span style={{ fontFamily:DS.font, fontWeight:800, fontSize:18, color:C.primary }}>대동제</span>
-        <button style={{ width:40, height:40, background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="search" size={22} color={C.gray700}/></button>
-      </div>
-      <div style={{ display:'flex', background:C.white, borderBottom:`1px solid ${C.borderDefault}` }}>
-        {dates.map(d => {
-          const active = d.key===activeDate;
-          return (
-            <button key={d.key} onClick={() => setDate(d.key)} style={{ flex:1, height:52, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'none', border:'none', borderBottom:active?`2px solid ${C.primary}`:'2px solid transparent', cursor:'pointer', marginBottom:-1 }}>
-              <span style={{ fontFamily:DS.font, fontSize:11, color:active?C.primary:C.gray400 }}>{d.day}</span>
-              <span style={{ fontFamily:DS.font, fontSize:18, fontWeight:700, color:active?C.primary:C.gray700 }}>{d.date}</span>
+          <div class="top-bar">
+            <button class="top-bar-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             </button>
-          );
-        })}
-      </div>
-      <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}` }}>
-        <button onClick={() => setFilterOpen(true)} style={{ display:'flex', alignItems:'center', gap:6, padding:'7px 12px', borderRadius:R.full, background:C.gray50, border:`1.5px solid ${C.borderDefault}`, cursor:'pointer' }}>
-          <Icon name="filter" size={14} color={C.gray600}/>
-          <span style={{ fontFamily:DS.font, fontSize:14, color:C.gray700 }}>필터</span>
-        </button>
-        <div style={{ flex:1 }}/>
-        <Dropdown label="정렬" options={[{value:'popular',label:'스크랩 많은순'},{value:'alpha',label:'가나다순'},{value:'status',label:'운영중 먼저'}]} value={sortVal} onChange={setSort}/>
-      </div>
-      <div style={{ flex:1, overflowY:'auto', background:C.white }}>
-        <div style={{ padding:'10px 16px 6px', fontFamily:DS.font, fontSize:12, color:C.gray400 }}>총 {booths.length}개의 부스</div>
-        {booths.map((b,i) => (
-          <BoothCard key={i} {...b} saved={savedItems.includes(i)} onSave={() => setSaved(prev=>prev.includes(i)?prev.filter(x=>x!==i):[...prev,i])} onClick={() => onNav('boothDetail')}/>
-        ))}
-      </div>
-      <NavBar active="booth" onChange={onNav}/>
-      <FilterSheet open={filterOpen} onClose={() => setFilterOpen(false)} onApply={() => {}}/>
-    </div>
-  );
-}
-
-// ── Booth Detail ──
-function BoothDetailScreen({ onBack }) {
-  const [tab, setTab] = React.useState('notice');
-  const [saved, setSaved] = React.useState(false);
-  const [comment, setComment] = React.useState('');
-  const [guestbook, setGuestbook] = React.useState([
-    {text:'정말 맛있어요. ^^^', time:'2시간 전'},
-    {text:'떡볶이도 정말 맛있고... 김밥도 너무 맛나다...', time:'1시간 전'},
-    {text:'나 이거 먹으려고 4년 학교 다녔나봐', time:'1시간 전'},
-    {text:'오마닥 --🦁', time:'1시간 전'},
-  ]);
-  const tabs = [{key:'notice',label:'공지'},{key:'menu',label:'메뉴'},{key:'guestbook',label:'방명록'}];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%', background:C.white }}>
-      <StatusBar/>
-      <div style={{ height:220, background:`linear-gradient(135deg, ${C.primarySubtle}, ${C.secondaryASubtle})`, position:'relative', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-        <Icon name="booth" size={60} color={C.primary}/>
-        <div style={{ position:'absolute', top:12, left:0, right:0, display:'flex', justifyContent:'space-between', padding:'0 8px' }}>
-          <button onClick={onBack} style={{ width:40, height:40, background:'rgba(255,255,255,0.85)', borderRadius:20, border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="arrowLeft" size={18} color={C.gray900}/></button>
-          <div style={{ display:'flex', gap:6 }}>
-            <button style={{ width:40, height:40, background:'rgba(255,255,255,0.85)', borderRadius:20, border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="share" size={18} color={C.gray900}/></button>
-            <button onClick={() => setSaved(!saved)} style={{ width:40, height:40, background:'rgba(255,255,255,0.85)', borderRadius:20, border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill={saved?C.primary:'none'} stroke={saved?C.primary:C.gray700} strokeWidth="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+            <span class="top-bar-title">부스 상세</span>
+            <button class="top-bar-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+          </div>
+          <div style="height:120px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;">
+            <span class="type-caption" style="color:var(--text-disabled);">콘텐츠 영역</span>
+          </div>
+          <div class="nav-bar">
+            <button class="nav-item" onclick="switchNav(this,'홈','home')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+              <span class="nav-label" style="color:var(--primary);">홈</span>
+              <div class="nav-dot"></div>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'부스','booth')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">부스</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'공연','music')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">공연</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'예약','ticket')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><path d="M2 9a1 1 0 011-1h1a2 2 0 100-4H3a1 1 0 01-1-1V4a1 1 0 011-1h18a1 1 0 011 1v1a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1V9z"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">예약</span>
+            </button>
+            <button class="nav-item" onclick="switchNav(this,'더보기','menu')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              <span class="nav-label" style="color:var(--gray-300);">더보기</span>
             </button>
           </div>
         </div>
-        <div style={{ position:'absolute', bottom:10, left:0, right:0, display:'flex', justifyContent:'center', gap:4 }}>
-          {[0,1,2].map(i => <div key={i} style={{ width:i===0?20:6, height:6, borderRadius:3, background:i===0?C.primary:'rgba(0,0,0,0.2)' }}/>)}
-        </div>
       </div>
-      <div style={{ padding:'16px 16px 0', flexShrink:0 }}>
-        <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:6 }}>
-          <div>
-            <div style={{ display:'flex', gap:6, marginBottom:6 }}>
-              <LocationChip location="백양로"/>
-              <Badge label="음식" variant="gray"/>
-            </div>
-            <div style={{ fontFamily:DS.font, fontSize:20, fontWeight:800, color:C.gray900, letterSpacing:'-0.02em' }}>문과대 붕어빵 공장</div>
-          </div>
-          <div style={{ textAlign:'right', flexShrink:0 }}>
-            <div style={{ fontFamily:DS.font, fontSize:22, fontWeight:800, color:C.primary }}>879</div>
-            <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>명이 스크랩했어요</div>
-          </div>
-        </div>
-        <div style={{ display:'flex', gap:12, padding:'10px 0', borderTop:`1px solid ${C.borderDefault}` }}>
-          {[{label:'위치',value:'포스코03'},{label:'운영시간',value:'수·목 10:00–15:00'},{label:'대기',value:'12팀'}].map(it => (
-            <div key={it.label} style={{ flex:1 }}>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{it.label}</div>
-              <div style={{ fontFamily:DS.font, fontSize:12, fontWeight:600, color:C.gray800 }}>{it.value}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <TabBar tabs={tabs} active={tab} onChange={setTab}/>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        {tab==='notice' && (
-          <div style={{ padding:16 }}>
-            {[{title:'떡볶이가 품절되었습니다 ㅠㅠ', time:'2시간 전'},{title:'떡볶이 곧 품절됩니다', time:'3시간 전'}].map((n,i) => (
-              <div key={i} style={{ padding:'14px 0', borderBottom:`1px solid ${C.borderDefault}` }}>
-                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                  <span style={{ fontFamily:DS.font, fontSize:14, color:C.gray800, flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', marginRight:8 }}>{n.title}</span>
-                  <Icon name="chevronDown" size={16} color={C.gray400}/>
-                </div>
-                <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400, marginTop:4 }}>{n.time}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        {tab==='menu' && (
-          <div style={{ padding:16 }}>
-            {[{name:'붕어빵 (3개)',price:'2,000원'},{name:'슈크림 붕어빵 (3개)',price:'2,500원'},{name:'팥 붕어빵 세트 (6개)',price:'4,500원'},{name:'음료 세트',price:'5,000원'}].map((m,i) => (
-              <div key={i} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'14px 0', borderBottom:`1px solid ${C.borderDefault}` }}>
-                <span style={{ fontFamily:DS.font, fontSize:15, color:C.gray800 }}>{m.name}</span>
-                <span style={{ fontFamily:DS.font, fontSize:15, fontWeight:700, color:C.gray900 }}>{m.price}</span>
-              </div>
-            ))}
-          </div>
-        )}
-        {tab==='guestbook' && (
-          <div>
-            {guestbook.map((g,i) => (
-              <div key={i} style={{ padding:'14px 16px', borderBottom:`1px solid ${C.borderDefault}`, display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontFamily:DS.font, fontSize:14, color:C.gray800, marginBottom:4 }}>{g.text}</div>
-                  <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{g.time}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {tab==='guestbook' && (
-        <div style={{ padding:'10px 16px 16px', borderTop:`1px solid ${C.borderDefault}`, display:'flex', gap:8, alignItems:'center', flexShrink:0 }}>
-          <div style={{ flex:1, background:C.gray50, borderRadius:R.full, padding:'0 16px', height:44, display:'flex', alignItems:'center' }}>
-            <input value={comment} onChange={e=>setComment(e.target.value)} placeholder="방명록은 익명으로 남겨져요." style={{ flex:1, background:'none', border:'none', outline:'none', fontFamily:DS.font, fontSize:14, color:C.gray800 }}/>
-          </div>
-          <button onClick={() => { if(comment.trim()){ setGuestbook(prev=>[{text:comment,time:'방금 전'},...prev]); setComment(''); }}} style={{ width:40, height:40, borderRadius:20, background:C.primary, border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </div>
-      )}
-      {tab!=='guestbook' && (
-        <div style={{ padding:'12px 16px', borderTop:`1px solid ${C.borderDefault}`, flexShrink:0 }}>
-          <Btn label="예약하기" variant="primary" size="lg" fullWidth onClick={() => {}}/>
-        </div>
-      )}
     </div>
-  );
+  </div>
+
+  <!-- ── 아이콘 ── -->
+  <div class="section">
+    <div class="section-title">아이콘</div>
+    <div class="preview-card">
+      <div class="icon-grid">
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span class="icon-name">home</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg><span class="icon-name">map</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M2 9a1 1 0 011-1h1a2 2 0 100-4H3a1 1 0 01-1-1V4a1 1 0 011-1h18a1 1 0 011 1v1a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1V9z"/></svg><span class="icon-name">ticket</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="icon-name">bell</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="icon-name">search</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="icon-name">pin</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="icon-name">clock</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="icon-name">info</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="icon-name">user</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg><span class="icon-name">filter</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span class="icon-name">check</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="icon-name">music</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="icon-name">heart</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="icon-name">feedback</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="icon-name">share</span></div>
+        <div class="icon-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg><span class="icon-name">booth</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleChip(el) {
+  const siblings = el.parentElement.querySelectorAll('.chip');
+  siblings.forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
 }
-
-// ── Timetable ──
-function TimetableScreen({ onNav }) {
-  const [activeDate, setDate] = React.useState('d1');
-  const [activeStage, setStage] = React.useState('all');
-  const dates = [{key:'d1',day:'수',date:'20'},{key:'d2',day:'목',date:'21'},{key:'d3',day:'금',date:'22'}];
-  const stages = [{key:'all',label:'전체'},{key:'open',label:'노천극장'},{key:'baek',label:'백양로'},{key:'han',label:'한글탑'}];
-  const items = [
-    {time:'09:30',end:'16:00',name:'부스 운영',location:'백양로·한글탑',color:C.gray200,desc:'전체 부스 운영'},
-    {time:'09:30',end:'22:00',name:'포토부스',location:'노천극장 앞',color:C.secondaryBSubtle,desc:''},
-    {time:'10:00',end:'10:30',name:'개막식',location:'노천극장',color:C.primary,desc:'총장님 축사 및 개막 퍼포먼스'},
-    {time:'11:00',end:'18:30',name:'학생 공연',location:'백양로 무대',color:C.secondaryA,desc:'동아리 공연 릴레이'},
-    {time:'17:00',end:'19:00',name:'동물배 공연',location:'노천극장',color:C.secondaryB,desc:'메인 무대 공연'},
-  ];
-  const stageColor = { '노천극장':C.primary,'백양로':C.secondaryA,'한글탑':C.secondaryB,'노천극장 앞':C.secondaryB,'백양로 무대':C.secondaryA,'백양로·한글탑':C.gray400 };
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/>
-      <TopBar title="공연 일정"/>
-      <div style={{ background:C.white, borderBottom:`1px solid ${C.borderDefault}`, flexShrink:0 }}>
-        <div style={{ display:'flex' }}>
-          {dates.map(d => {
-            const active = d.key===activeDate;
-            return (
-              <button key={d.key} onClick={() => setDate(d.key)} style={{ flex:1, padding:'12px 0', display:'flex', flexDirection:'column', alignItems:'center', gap:2, background:'none', border:'none', borderBottom:active?`3px solid ${C.primary}`:'3px solid transparent', cursor:'pointer', marginBottom:-1 }}>
-                <span style={{ fontFamily:DS.font, fontSize:12, color:active?C.primary:C.gray400 }}>{d.day}요일</span>
-                <span style={{ fontFamily:DS.font, fontSize:24, fontWeight:800, color:active?C.primary:C.gray700 }}>5.{d.date}</span>
-              </button>
-            );
-          })}
-        </div>
-        <div style={{ display:'flex', gap:8, padding:'10px 16px', overflowX:'auto' }}>
-          {stages.map(s => <Chip key={s.key} label={s.label} active={s.key===activeStage} onClick={() => setStage(s.key)}/>)}
-        </div>
-      </div>
-      <div style={{ flex:1, overflowY:'auto', padding:'16px' }}>
-        {items.map((item,i) => (
-          <div key={i} onClick={() => onNav('performanceDetail')} style={{ display:'flex', gap:12, marginBottom:16, cursor:'pointer', alignItems:'flex-start' }}>
-            <div style={{ width:52, flexShrink:0, paddingTop:2 }}>
-              <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:700, color:C.gray800 }}>{item.time}</div>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>–{item.end}</div>
-            </div>
-            <div style={{ flex:1, background:C.white, borderRadius:R.md, padding:'12px 14px', borderLeft:`4px solid ${stageColor[item.location]||C.primary}`, boxShadow:DS.shadow.sm }}>
-              <div style={{ display:'flex', gap:6, marginBottom:6 }}>
-                <span style={{ fontFamily:DS.font, fontSize:11, fontWeight:700, color:stageColor[item.location]||C.primary, background:`${stageColor[item.location]||C.primary}15`, padding:'2px 8px', borderRadius:R.full }}>{item.location}</span>
-              </div>
-              <div style={{ fontFamily:DS.font, fontSize:15, fontWeight:700, color:C.gray900, marginBottom:2 }}>{item.name}</div>
-              {item.desc && <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray500 }}>{item.desc}</div>}
-            </div>
-          </div>
-        ))}
-      </div>
-      <NavBar active="timetable" onChange={onNav}/>
-    </div>
-  );
+function switchTab(el) {
+  const siblings = el.parentElement.querySelectorAll('.tab-btn');
+  siblings.forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
 }
-
-// ── Performance Detail ──
-function PerformanceDetailScreen({ onBack }) {
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/>
-      <TopBar title="공연 상세" onBack={onBack} onShare={() => {}}/>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        <div style={{ height:200, background:`linear-gradient(135deg, ${C.secondaryB} 0%, ${C.secondaryA} 100%)`, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:8 }}>
-          <Icon name="music" size={48} color="white"/>
-          <span style={{ fontFamily:DS.font, fontSize:11, color:'rgba(255,255,255,0.8)' }}>MAIN STAGE</span>
-        </div>
-        <div style={{ padding:'20px 16px' }}>
-          <div style={{ display:'flex', gap:6, marginBottom:10 }}>
-            <LocationChip location="노천극장"/>
-            <Badge label="메인 공연" variant="pink"/>
-          </div>
-          <h2 style={{ fontFamily:DS.font, fontSize:24, fontWeight:700, color:C.gray900, margin:'0 0 4px' }}>LIKELION BAND 공연</h2>
-          <p style={{ fontFamily:DS.font, fontSize:14, color:C.gray500, margin:'0 0 20px' }}>멋쟁이사자처럼 연세대학교 밴드부의 특별 공연</p>
-          <div style={{ display:'flex', flexDirection:'column', gap:12, padding:'16px', background:C.gray50, borderRadius:R.lg, marginBottom:20 }}>
-            {[{icon:'clock',label:'공연 시간',value:'2026.05.20 (수) 19:00 – 21:00'},{icon:'pin',label:'공연 장소',value:'연세대학교 노천극장'},{icon:'people',label:'관람 인원',value:'제한 없음 (자유 관람)'}].map(it => (
-              <div key={it.label} style={{ display:'flex', gap:12, alignItems:'center' }}>
-                <div style={{ width:36, height:36, borderRadius:R.sm, background:C.secondaryBSubtle, display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name={it.icon} size={16} color={C.secondaryB}/></div>
-                <div>
-                  <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{it.label}</div>
-                  <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:500, color:C.gray800 }}>{it.value}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginBottom:20 }}>
-            <div style={{ fontFamily:DS.font, fontSize:17, fontWeight:600, color:C.gray900, marginBottom:8 }}>세트리스트</div>
-            {['1. 오프닝 – 사랑했지만','2. 거짓말 거짓말 거짓말','3. 봄날','4. 앙코르'].map((s,i) => (
-              <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 0', borderBottom:`1px solid ${C.borderDefault}` }}>
-                <span style={{ fontFamily:DS.font, fontSize:14, color:C.gray800 }}>{s}</span>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding:16, background:C.primarySubtle, borderRadius:R.md, display:'flex', gap:10 }}>
-            <Icon name="info" size={18} color={C.primary} style={{ marginTop:1, flexShrink:0 }}/>
-            <span style={{ fontFamily:DS.font, fontSize:12, color:C.primary }}>우천 시 공연 장소가 변경될 수 있습니다. 공지사항을 확인해 주세요.</span>
-          </div>
-        </div>
-      </div>
-      <div style={{ padding:'12px 16px', background:C.white, borderTop:`1px solid ${C.borderDefault}` }}>
-        <Btn label="공연 장소 지도 보기" variant="outline" size="md" icon="map" fullWidth onClick={() => {}}/>
-      </div>
-    </div>
-  );
+function toggleBtn(el) {
+  el.classList.toggle('on');
 }
-
-// ── Map ──
-function MapScreen({ onNav }) {
-  const [selected, setSelected] = React.useState(null);
-  const pins = [
-    {id:1,x:38,y:42,label:'백양로 A존',type:'booth',count:12},
-    {id:2,x:62,y:58,label:'한글탑 광장',type:'booth',count:8},
-    {id:3,x:28,y:68,label:'노천극장',type:'stage',count:null},
-    {id:4,x:72,y:32,label:'백양로 B존',type:'booth',count:6},
-    {id:5,x:48,y:25,label:'학생회관',type:'facility',count:null},
-  ];
-  const typeColor = {booth:C.primary,stage:C.secondaryB,facility:C.success};
-  const typeLabel = {booth:'부스',stage:'공연',facility:'시설'};
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}` }}>
-        <span style={{ fontFamily:DS.font, fontWeight:800, fontSize:18, color:C.primary }}>주요 시설 위치</span>
-        <button style={{ width:40, height:40, background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="search" size={22} color={C.gray700}/></button>
-      </div>
-      <div style={{ display:'flex', gap:8, padding:'10px 16px', background:C.white, borderBottom:`1px solid ${C.borderDefault}`, overflowX:'auto', flexShrink:0 }}>
-        {[{k:'all',l:'전체'},{k:'food',l:'음식'},{k:'stage',l:'무대'},{k:'booth',l:'부스'},{k:'accessible',l:'배리어프리'}].map(f => <Chip key={f.k} label={f.l} active={f.k==='all'} onClick={() => {}}/>)}
-      </div>
-      <div style={{ flex:1, position:'relative', overflow:'hidden' }}>
-        <div style={{ width:'100%', height:'100%', background:'linear-gradient(160deg,#d4e8d0 0%,#c8dfc4 50%,#e0eed8 100%)', position:'relative' }}>
-          <svg style={{ position:'absolute', width:'100%', height:'100%', overflow:'visible' }}>
-            <path d="M 10% 90% Q 35% 55% 60% 30% Q 75% 15% 90% 25%" stroke="white" strokeWidth="10" fill="none" strokeLinecap="round" opacity="0.7"/>
-            <path d="M 5% 55% L 95% 60%" stroke="white" strokeWidth="8" fill="none" opacity="0.5"/>
-          </svg>
-          {[[10,15,80,50,'#b8d4b4'],[55,22,60,40,'#b8d4b4'],[15,60,45,35,'#c4dcc0']].map(([l,t,w,h,bg],i) => (
-            <div key={i} style={{ position:'absolute', left:`${l}%`, top:`${t}%`, width:w, height:h, background:bg, borderRadius:4, border:'1px solid rgba(255,255,255,0.6)' }}/>
-          ))}
-          {pins.map(pin => (
-            <button key={pin.id} onClick={() => setSelected(selected?.id===pin.id?null:pin)} style={{ position:'absolute', left:`${pin.x}%`, top:`${pin.y}%`, transform:'translate(-50%,-100%)', background:'none', border:'none', cursor:'pointer', zIndex:10 }}>
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-                <div style={{ background:typeColor[pin.type], color:'white', borderRadius:16, padding:'5px 10px', fontFamily:DS.font, fontSize:11, fontWeight:700, whiteSpace:'nowrap', boxShadow:'0 2px 8px rgba(0,0,0,0.2)', display:'flex', alignItems:'center', gap:4 }}>
-                  {pin.label}
-                  {pin.count && <span style={{ background:'rgba(255,255,255,0.3)', borderRadius:8, padding:'0 5px', fontSize:10 }}>{pin.count}</span>}
-                </div>
-                <div style={{ width:0, height:0, borderLeft:'5px solid transparent', borderRight:'5px solid transparent', borderTop:`7px solid ${typeColor[pin.type]}` }}/>
-              </div>
-            </button>
-          ))}
-          <div style={{ position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)' }}>
-            <div style={{ width:16, height:16, borderRadius:8, background:C.primary, border:'3px solid white', boxShadow:DS.shadow.md }}/>
-            <div style={{ position:'absolute', top:-8, left:-8, width:32, height:32, borderRadius:16, background:`${C.primary}30`, animation:'pulse 2s infinite' }}/>
-          </div>
-          <div style={{ position:'absolute', bottom:selected?200:16, right:12, background:'rgba(255,255,255,0.95)', borderRadius:R.md, padding:'8px 12px', boxShadow:DS.shadow.sm }}>
-            {[{type:'booth',label:'부스'},{type:'stage',label:'공연'},{type:'facility',label:'시설'}].map(l => (
-              <div key={l.type} style={{ display:'flex', alignItems:'center', gap:6, marginBottom:4 }}>
-                <div style={{ width:10, height:10, borderRadius:5, background:typeColor[l.type], flexShrink:0 }}/>
-                <span style={{ fontFamily:DS.font, fontSize:11, color:C.gray600 }}>{l.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {selected && (
-          <div style={{ position:'absolute', bottom:0, left:0, right:0, background:C.white, borderRadius:`${R.xl}px ${R.xl}px 0 0`, padding:'20px 20px 24px', boxShadow:DS.shadow.lg }}>
-            <div style={{ width:36, height:4, borderRadius:2, background:C.gray100, margin:'0 auto 16px' }}/>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
-              <div>
-                <div style={{ display:'flex', gap:6, marginBottom:6 }}>
-                  <span style={{ fontFamily:DS.font, fontSize:11, fontWeight:700, color:typeColor[selected.type], background:`${typeColor[selected.type]}15`, padding:'2px 8px', borderRadius:R.full }}>{typeLabel[selected.type]}</span>
-                </div>
-                <div style={{ fontFamily:DS.font, fontSize:18, fontWeight:800, color:C.gray900 }}>{selected.label}</div>
-              </div>
-              {selected.count && <div style={{ textAlign:'right' }}>
-                <div style={{ fontFamily:DS.font, fontSize:22, fontWeight:800, color:C.primary }}>{selected.count}</div>
-                <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>개의 부스</div>
-              </div>}
-            </div>
-            <div style={{ display:'flex', gap:8 }}>
-              <Btn label="길찾기" variant="ghost" size="sm" icon="map" onClick={() => {}}/>
-              <Btn label={selected.type==='booth'?'부스 목록 보기':'공연 정보 보기'} variant="primary" size="sm" onClick={() => onNav(selected.type==='booth'?'booth':'timetable')}/>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+function toggleDropdown(btn) {
+  const menu = btn.nextElementSibling;
+  menu.classList.toggle('open');
 }
-
-// ── Reservation ──
-function ReservationScreen({ onNav }) {
-  const [phone, setPhone] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [showList, setShowList] = React.useState(false);
-  const reservations = [
-    { booth:'문과대 붕어빵', date:'5월 20일', time:'14:30', status:'confirmed', num:2 },
-    { booth:'VR 체험관', date:'5월 21일', time:'11:00', status:'waiting', num:1 },
-    { booth:'포토존 스튜디오', date:'5월 22일', time:'16:00', status:'completed', num:3 },
-  ];
-  const statusInfo = { confirmed:{label:'예약확정',variant:'success'}, waiting:{label:'대기중',variant:'warning'}, completed:{label:'이용완료',variant:'gray'} };
-  if (showList) return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="예약 목록" onBack={() => setShowList(false)}/>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        <div style={{ padding:'16px 16px 8px', fontFamily:DS.font, fontSize:14, color:C.gray500 }}>총 {reservations.length}건의 예약</div>
-        {reservations.map((r,i) => {
-          const st = statusInfo[r.status];
-          return (
-            <div key={i} style={{ margin:'0 16px 12px', background:C.white, borderRadius:R.lg, boxShadow:DS.shadow.sm, overflow:'hidden' }}>
-              <div style={{ padding:'14px 16px', borderBottom:`1px solid ${C.borderDefault}`, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                <span style={{ fontFamily:DS.font, fontSize:15, fontWeight:600, color:C.gray900 }}>{r.booth}</span>
-                <Badge label={st.label} variant={st.variant}/>
-              </div>
-              <div style={{ padding:'12px 16px', display:'flex', gap:16 }}>
-                {[{label:'날짜',value:r.date},{label:'시간',value:r.time},{label:'인원',value:`${r.num}명`}].map(it => (
-                  <div key={it.label}>
-                    <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{it.label}</div>
-                    <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray800 }}>{it.value}</div>
-                  </div>
-                ))}
-              </div>
-              {r.status!=='completed' && (
-                <div style={{ padding:'0 16px 14px', display:'flex', gap:8 }}>
-                  <Btn label="취소" variant="ghost" size="sm" onClick={() => {}}/>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <NavBar active="reservation" onChange={onNav}/>
-    </div>
-  );
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="예약 조회" onBack={() => onNav('home')}/>
-      <div style={{ flex:1, overflowY:'auto', padding:24 }}>
-        <div style={{ marginBottom:32 }}>
-          <div style={{ fontFamily:DS.font, fontSize:20, fontWeight:700, color:C.gray900, marginBottom:8 }}>예약 확인</div>
-          <div style={{ fontFamily:DS.font, fontSize:14, color:C.gray500 }}>예약 시 입력한 정보로 조회하세요</div>
-        </div>
-        <div style={{ display:'flex', flexDirection:'column', gap:16, marginBottom:24 }}>
-          <div>
-            <label style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:6, display:'block' }}>이름</label>
-            <Input placeholder="이름을 입력하세요" value={name} onChange={setName} icon="user"/>
-          </div>
-          <div>
-            <label style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:6, display:'block' }}>전화번호</label>
-            <Input placeholder="010-0000-0000" value={phone} onChange={setPhone} icon="phone" type="tel"/>
-          </div>
-        </div>
-        <Btn label="예약 조회하기" variant="primary" size="lg" fullWidth onClick={() => setShowList(true)}/>
-        <div style={{ marginTop:24, padding:16, background:C.primarySubtle, borderRadius:R.md, display:'flex', gap:10 }}>
-          <Icon name="info" size={18} color={C.primary} style={{ flexShrink:0 }}/>
-          <span style={{ fontFamily:DS.font, fontSize:12, color:C.primary, lineHeight:'150%' }}>예약 정보가 기억나지 않으신가요? 부스 운영진에게 직접 문의하거나 총학생회에 연락해 주세요.</span>
-        </div>
-      </div>
-      <NavBar active="reservation" onChange={onNav}/>
-    </div>
-  );
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dropdown')) {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+});
+function switchNav(el) {
+  const navItems = el.closest('.nav-bar').querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    const label = item.querySelector('.nav-label');
+    const dot = item.querySelector('.nav-dot');
+    const svgs = item.querySelectorAll('svg');
+    svgs.forEach(s => s.setAttribute('stroke', 'var(--gray-300)'));
+    label.style.color = 'var(--gray-300)';
+    if (dot) dot.remove();
+  });
+  const label = el.querySelector('.nav-label');
+  const svgs = el.querySelectorAll('svg');
+  svgs.forEach(s => s.setAttribute('stroke', 'var(--primary)'));
+  label.style.color = 'var(--primary)';
+  if (!el.querySelector('.nav-dot')) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot';
+    el.appendChild(dot);
+  }
 }
-
-// ── Menu Drawer ──
-function MenuDrawerScreen({ onClose, onNav }) {
-  const items = [
-    {icon:'home',label:'홈',key:'home'},{icon:'map',label:'축제 지도',key:'map'},
-    {icon:'booth',label:'부스 정보',key:'booth'},{icon:'music',label:'공연 타임테이블',key:'timetable'},
-    {icon:'ticket',label:'예약 조회',key:'reservation'},{icon:'bell',label:'공지사항',key:'notice'},
-    {icon:'lost',label:'분실물 센터',key:'lost'},{icon:'accessibility',label:'배리어프리 안내',key:'barrier'},
-    {icon:'feedback',label:'피드백 & 건의',key:'feedback'},{icon:'people',label:'만든이들',key:'credits'},
-    {icon:'phone',label:'총학생회 문의',key:'contact'},
-  ];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%', background:C.white }}>
-      <StatusBar/>
-      <div style={{ padding:'20px 20px 16px', background:`linear-gradient(135deg, ${C.primary}, ${C.secondaryA})`, display:'flex', alignItems:'flex-end', justifyContent:'space-between' }}>
-        <div>
-          <div style={{ fontFamily:DS.font, fontWeight:800, fontSize:22, color:'white', letterSpacing:'-0.02em' }}>2026 대동제</div>
-          <div style={{ fontFamily:DS.font, fontSize:12, color:'rgba(255,255,255,0.7)', marginTop:2 }}>5월 20일 – 22일 · 연세대학교</div>
-        </div>
-        <button onClick={onClose} style={{ background:'rgba(255,255,255,0.2)', border:'none', borderRadius:R.full, width:36, height:36, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}><Icon name="close" size={18} color="white"/></button>
-      </div>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        {items.map((it,i) => (
-          <React.Fragment key={it.key}>
-            {(i===4||i===8) && <Divider/>}
-            <ListItem icon={it.icon} title={it.label} onClick={() => { onNav(it.key); }}/>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── Notice ──
-function NoticeScreen({ onNav }) {
-  const [activeTab, setTab] = React.useState('all');
-  const [showDetail, setShowDetail] = React.useState(false);
-  const notices = [
-    {title:'[긴급] 5월 21일 노천극장 공연 시간 변경 안내', date:'2026.05.19', isNew:true},
-    {title:'대동제 기간 중 쓰레기 배출 안내', date:'2026.05.18', isNew:true},
-    {title:'부스 예약 시스템 이용 방법 안내', date:'2026.05.15', isNew:false},
-    {title:'배리어프리 이동 동선 안내', date:'2026.05.14', isNew:false},
-    {title:'분실물 센터 운영 안내', date:'2026.05.12', isNew:false},
-  ];
-  const tabs = [{key:'all',label:'전체',count:notices.length},{key:'urgent',label:'긴급',count:1},{key:'general',label:'일반',count:4}];
-  if (showDetail) return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="공지사항" onBack={() => setShowDetail(false)} onShare={() => {}}/>
-      <div style={{ flex:1, overflowY:'auto', padding:'20px 16px' }}>
-        <div style={{ display:'flex', gap:6, marginBottom:12 }}>
-          <Badge label="긴급" variant="error"/>
-          <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>2026.05.19</span>
-        </div>
-        <h2 style={{ fontFamily:DS.font, fontSize:20, fontWeight:700, color:C.gray900, margin:'0 0 20px', lineHeight:'140%' }}>[긴급] 5월 21일 노천극장 공연 시간 변경 안내</h2>
-        <div style={{ padding:'12px 14px', background:C.errorSubtle, borderRadius:R.md, marginBottom:20, display:'flex', gap:8 }}>
-          <Icon name="info" size={16} color={C.error} style={{ flexShrink:0, marginTop:2 }}/>
-          <span style={{ fontFamily:DS.font, fontSize:12, color:C.error }}>기상 악화로 인해 공연 시간이 변경되었습니다.</span>
-        </div>
-        {['안녕하세요, 2026 연세대학교 대동제 운영팀입니다.','5월 21일(목) 노천극장에서 예정되어 있던 메인 공연의 시작 시간이 기상 예보로 인해 변경되었음을 알려드립니다.','• 기존 시간: 오후 7:00 시작\n• 변경 시간: 오후 6:00 시작','행사 전 기상 상황을 다시 확인하여 최종 결정 후 재공지 예정이니, 공식 채널을 통해 업데이트를 확인해 주시기 바랍니다.','감사합니다.'].map((p,i) => (
-          <p key={i} style={{ fontFamily:DS.font, fontSize:14, color:i===2?C.primary:C.gray700, margin:'0 0 16px', lineHeight:'160%', whiteSpace:'pre-line', fontWeight:i===2?600:400 }}>{p}</p>
-        ))}
-      </div>
-    </div>
-  );
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="공지사항" onSearch={() => {}}/>
-      <TabBar tabs={tabs} active={activeTab} onChange={setTab}/>
-      <div style={{ flex:1, overflowY:'auto', background:C.white }}>
-        {notices.map((n,i) => <NoticeItem key={i} {...n} onClick={() => setShowDetail(true)}/>)}
-      </div>
-    </div>
-  );
-}
-
-// ── Lost & Found ──
-function LostScreen({ onNav }) {
-  const [activeTab, setTab] = React.useState('found');
-  const foundItems = [
-    {name:'검정 지갑',location:'백양로 A존',date:'05.20',status:'kept'},
-    {name:'에어팟 케이스',location:'노천극장',date:'05.20',status:'kept'},
-    {name:'학생증 (이○○)',location:'한글탑',date:'05.19',status:'returned'},
-  ];
-  const tabs = [{key:'found',label:'습득 물품',count:2},{key:'report',label:'신고하기'}];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="분실물 센터" onBack={() => onNav('home')}/>
-      <TabBar tabs={tabs} active={activeTab} onChange={setTab}/>
-      {activeTab==='found' ? (
-        <div style={{ flex:1, overflowY:'auto' }}>
-          <div style={{ padding:'12px 16px', background:C.warningSubtle, display:'flex', gap:8 }}>
-            <Icon name="info" size={16} color={C.warning} style={{ flexShrink:0, marginTop:1 }}/>
-            <span style={{ fontFamily:DS.font, fontSize:12, color:C.warning }}>분실물 센터 위치: 학생회관 1층 · 운영시간 10:00–20:00</span>
-          </div>
-          {foundItems.map((item,i) => (
-            <div key={i} style={{ padding:'14px 16px', borderBottom:`1px solid ${C.borderDefault}`, background:C.white, display:'flex', alignItems:'center', gap:12 }}>
-              <div style={{ width:44, height:44, borderRadius:R.md, background:C.gray50, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name="lost" size={22} color={C.gray400}/></div>
-              <div style={{ flex:1 }}>
-                <div style={{ display:'flex', gap:6, marginBottom:4 }}>
-                  <span style={{ fontFamily:DS.font, fontSize:15, fontWeight:600, color:C.gray900 }}>{item.name}</span>
-                  <Badge label={item.status==='returned'?'반환완료':'보관중'} variant={item.status==='returned'?'gray':'warning'} size="sm"/>
-                </div>
-                <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{item.location} · {item.date} 습득</span>
-              </div>
-              <Icon name="chevronRight" size={16} color={C.gray300}/>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div style={{ flex:1, overflowY:'auto', padding:20 }}>
-          <p style={{ fontFamily:DS.font, fontSize:14, color:C.gray600, marginBottom:20 }}>분실물 신고 내용을 입력해 주시면 담당자가 확인 후 연락드립니다.</p>
-          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-            {[{label:'물품명',placeholder:'예) 검정 지갑'},{label:'분실 장소',placeholder:'예) 백양로 A존'},{label:'분실 시간',placeholder:'예) 14:30'},{label:'연락처',placeholder:'010-0000-0000',type:'tel'}].map(f => (
-              <div key={f.label}>
-                <label style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:6, display:'block' }}>{f.label}</label>
-                <Input placeholder={f.placeholder} type={f.type||'text'}/>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop:24 }}>
-            <Btn label="신고 접수하기" variant="primary" size="lg" fullWidth onClick={() => {}}/>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Barrier Free ──
-function BarrierScreen({ onNav }) {
-  const items = [
-    {icon:'accessibility',title:'휠체어 전용 경로',desc:'학생회관 → 백양로 → 노천극장',detail:'포장도로 이용, 경사로 완비'},
-    {icon:'map',title:'배리어프리 화장실',desc:'학생회관 1층, 공학관 1층',detail:'24시간 이용 가능'},
-    {icon:'phone',title:'도우미 요청',desc:'이동 지원 인력 배치',detail:'010-0000-0000으로 연락'},
-    {icon:'info',title:'임시 휴게 공간',desc:'총 3곳 운영',detail:'백양로 중앙, 노천극장 입구, 학생회관 앞'},
-  ];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="배리어프리 안내" onBack={() => onNav('home')}/>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        <div style={{ padding:'20px 16px 16px', background:`linear-gradient(135deg, ${C.primarySubtle}, ${C.secondaryASubtle})` }}>
-          <div style={{ fontFamily:DS.font, fontSize:20, fontWeight:700, color:C.primary, marginBottom:6 }}>모두를 위한 대동제</div>
-          <div style={{ fontFamily:DS.font, fontSize:14, color:C.gray600 }}>누구나 편리하게 이용할 수 있도록 배리어프리 시설을 운영합니다.</div>
-        </div>
-        {items.map((it,i) => (
-          <div key={i} style={{ padding:'16px', borderBottom:`1px solid ${C.borderDefault}`, background:C.white, display:'flex', gap:14 }}>
-            <div style={{ width:44, height:44, borderRadius:R.md, background:C.primarySubtle, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name={it.icon} size={22} color={C.primary}/></div>
-            <div style={{ flex:1 }}>
-              <div style={{ fontFamily:DS.font, fontSize:15, fontWeight:600, color:C.gray900, marginBottom:2 }}>{it.title}</div>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray600 }}>{it.desc}</div>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400, marginTop:2 }}>{it.detail}</div>
-            </div>
-          </div>
-        ))}
-        <div style={{ padding:16 }}>
-          <Btn label="배리어프리 동선 지도 보기" variant="outline" size="md" icon="map" fullWidth onClick={() => {}}/>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Feedback ──
-function FeedbackScreen({ onBack }) {
-  const [category, setCategory] = React.useState('general');
-  const [rating, setRating] = React.useState(0);
-  const categories = [{k:'general',l:'일반'},{k:'booth',l:'부스'},{k:'performance',l:'공연'},{k:'facility',l:'시설'},{k:'barrier',l:'배리어프리'}];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="피드백 & 건의사항" onBack={onBack}/>
-      <div style={{ flex:1, overflowY:'auto', padding:20 }}>
-        <div style={{ marginBottom:24 }}>
-          <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:8 }}>전체 만족도</div>
-          <div style={{ display:'flex', gap:8 }}>
-            {[1,2,3,4,5].map(n => (
-              <button key={n} onClick={() => setRating(n)} style={{ background:'none', border:'none', cursor:'pointer', padding:2 }}>
-                <Icon name={n<=rating?'star':'starEmpty'} size={32} color={n<=rating?C.warning:C.gray200}/>
-              </button>
-            ))}
-          </div>
-        </div>
-        <div style={{ marginBottom:16 }}>
-          <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:8 }}>카테고리</div>
-          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
-            {categories.map(c => <Chip key={c.k} label={c.l} active={c.k===category} onClick={() => setCategory(c.k)}/>)}
-          </div>
-        </div>
-        <div style={{ marginBottom:16 }}>
-          <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:8 }}>내용</div>
-          <textarea placeholder="의견을 자유롭게 작성해 주세요..." style={{ width:'100%', height:140, padding:12, borderRadius:R.md, border:`1.5px solid ${C.borderDefault}`, fontFamily:DS.font, fontSize:14, color:C.gray800, resize:'none', outline:'none', boxSizing:'border-box' }}/>
-        </div>
-        <div style={{ marginBottom:24 }}>
-          <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:600, color:C.gray700, marginBottom:8 }}>연락처 (선택)</div>
-          <Input placeholder="회신 원하시면 입력해 주세요" icon="phone" type="tel"/>
-        </div>
-        <Btn label="제출하기" variant="primary" size="lg" fullWidth onClick={() => {}}/>
-      </div>
-    </div>
-  );
-}
-
-// ── Credits ──
-function CreditsScreen({ onBack }) {
-  const teams = [
-    {role:'기획', members:['김기획','이기획']},
-    {role:'디자인', members:['박디자인','최디자인','정디자인']},
-    {role:'프론트엔드', members:['강프론트','조프론트']},
-    {role:'백엔드', members:['윤백엔드','임백엔드','한백엔드']},
-  ];
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="만든이들" onBack={onBack}/>
-      <div style={{ flex:1, overflowY:'auto' }}>
-        <div style={{ padding:'32px 20px 24px', background:`linear-gradient(135deg, ${C.primary}, ${C.secondaryA})`, textAlign:'center' }}>
-          <div style={{ fontFamily:DS.font, fontWeight:800, fontSize:28, color:'white', marginBottom:4 }}>2026 대동제</div>
-          <div style={{ fontFamily:DS.font, fontSize:14, color:'rgba(255,255,255,0.8)' }}>멋쟁이사자처럼 연세대학교 14기</div>
-        </div>
-        {teams.map((team,i) => (
-          <div key={i} style={{ padding:'16px', borderBottom:`1px solid ${C.borderDefault}` }}>
-            <div style={{ fontFamily:DS.font, fontSize:14, fontWeight:700, color:C.primary, marginBottom:10 }}>{team.role}</div>
-            <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
-              {team.members.map(m => (
-                <div key={m} style={{ display:'flex', alignItems:'center', gap:6 }}>
-                  <div style={{ width:32, height:32, borderRadius:16, background:C.primarySubtle, display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="user" size={16} color={C.primary}/></div>
-                  <span style={{ fontFamily:DS.font, fontSize:14, color:C.gray700 }}>{m}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-        <div style={{ padding:20, textAlign:'center' }}>
-          <span style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>🦁 LIKELION YONSEI 14th · 2026</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Contact ──
-function ContactScreen({ onBack }) {
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%' }}>
-      <StatusBar/><TopBar title="총학생회 문의처" onBack={onBack}/>
-      <div style={{ flex:1, overflowY:'auto', padding:20 }}>
-        <div style={{ marginBottom:24, padding:16, background:C.primarySubtle, borderRadius:R.lg, display:'flex', gap:12, alignItems:'center' }}>
-          <div style={{ width:48, height:48, borderRadius:24, background:C.primary, display:'flex', alignItems:'center', justifyContent:'center' }}><Icon name="people" size={24} color="white"/></div>
-          <div>
-            <div style={{ fontFamily:DS.font, fontSize:15, fontWeight:700, color:C.primary }}>연세대학교 총학생회</div>
-            <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray500 }}>2026 대동제 운영본부</div>
-          </div>
-        </div>
-        {[{icon:'phone',label:'전화 문의',value:'02-2123-0000',sub:'평일 09:00–18:00'},{icon:'feedback',label:'카카오톡',value:'@연세총학',sub:'24시간 메시지 가능'},{icon:'bell',label:'이메일',value:'ysufest@yonsei.ac.kr',sub:'1–2일 내 답변'},{icon:'pin',label:'오프라인 방문',value:'학생회관 302호',sub:'평일 10:00–17:00'}].map((it,i) => (
-          <div key={i} style={{ display:'flex', gap:14, padding:'16px 0', borderBottom:`1px solid ${C.borderDefault}` }}>
-            <div style={{ width:40, height:40, borderRadius:R.md, background:C.gray50, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name={it.icon} size={20} color={C.gray500}/></div>
-            <div style={{ flex:1 }}>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{it.label}</div>
-              <div style={{ fontFamily:DS.font, fontSize:15, fontWeight:600, color:C.primary }}>{it.value}</div>
-              <div style={{ fontFamily:DS.font, fontSize:12, color:C.gray400 }}>{it.sub}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ════════════════════════════════════════
-// APP ROUTER
-// ════════════════════════════════════════
-function App() {
-  const [screen, setScreen] = React.useState('home');
-  const [history, setHistory] = React.useState(['home']);
-
-  const navigate = (key) => {
-    setScreen(key);
-    setHistory(h => [...h, key]);
-  };
-
-  const goBack = () => {
-    setHistory(h => {
-      const next = h.slice(0,-1);
-      setScreen(next[next.length-1] || 'home');
-      return next.length ? next : ['home'];
-    });
-  };
-
-  const screens = {
-    home: <HomeScreen onNav={navigate}/>,
-    booth: <BoothListScreen onNav={navigate}/>,
-    boothDetail: <BoothDetailScreen onBack={goBack}/>,
-    timetable: <TimetableScreen onNav={navigate}/>,
-    performanceDetail: <PerformanceDetailScreen onBack={goBack}/>,
-    map: <MapScreen onNav={navigate}/>,
-    reservation: <ReservationScreen onNav={navigate}/>,
-    menu: <MenuDrawerScreen onClose={goBack} onNav={navigate}/>,
-    more: <MenuDrawerScreen onClose={goBack} onNav={navigate}/>,
-    notice: <NoticeScreen onNav={navigate}/>,
-    lost: <LostScreen onNav={navigate}/>,
-    barrier: <BarrierScreen onNav={navigate}/>,
-    feedback: <FeedbackScreen onBack={goBack}/>,
-    credits: <CreditsScreen onBack={goBack}/>,
-    contact: <ContactScreen onBack={goBack}/>,
-  };
-
-  return (
-    <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', overflow:'hidden' }}>
-      {screens[screen] || screens.home}
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
 </html>

@@ -387,7 +387,86 @@ body {
   border: 1px solid rgba(0,0,0,0.06);
 }
 .swatch-label { font-size: 10px; color: var(--text-secondary); margin-top: 3px; text-align: center; font-family: monospace; }
-
+  
+/* ── Main Banner / 메인 배너 ── */
+function BannerMain({ onNav }) {
+  const [navActive, setNav] = React.useState('home');
+  const banners = [
+    { title: '2026 연세대학교\n대동제', subtitle: '5월 20일 – 22일 · 백양로', color: `linear-gradient(135deg, ${C.primary} 0%, ${C.secondaryA} 100%)` },
+    { title: '야외 공연장\n오픈!', subtitle: '다채로운 공연을 만나보세요', color: `linear-gradient(135deg, ${C.secondaryB} 0%, ${C.secondaryA} 100%)` },
+  ];
+  const [bannerIdx, setBannerIdx] = React.useState(0);
+  React.useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % banners.length), 3000);
+    return () => clearInterval(t);
+  }, []);
+  const b = banners[bannerIdx];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar dark/>
+      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {/* Banner */}
+        <div style={{ height: 240, background: b.color, padding: '24px 20px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', transition: 'background 0.5s' }}>
+          <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 4 }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="search" color="white" size={22}/></button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="bell" color="white" size={22}/></button>
+            <button onClick={() => onNav?.('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="menu" color="white" size={22}/></button>
+          </div>
+          <div style={{ position: 'absolute', top: 20, left: 20 }}>
+            <span style={{ fontFamily: DS.font, fontWeight: 800, fontSize: 18, color: 'white', letterSpacing: '-0.02em' }}>대동제</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: DS.font, ...T.display, fontSize: 26, color: 'white', whiteSpace: 'pre-line' }}>{b.title}</span>
+            <span style={{ fontFamily: DS.font, ...T.body2, color: 'rgba(255,255,255,0.8)' }}>{b.subtitle}</span>
+          </div>
+          <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+            {banners.map((_, i) => <div key={i} style={{ width: i === bannerIdx ? 20 : 6, height: 6, borderRadius: 3, background: i === bannerIdx ? 'white' : 'rgba(255,255,255,0.4)', transition: 'width 0.3s' }}/>)}
+          </div>
+        </div>
+        {/* Quick menu */}
+        <div style={{ background: C.white, padding: '20px 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+            {[{icon:'map',label:'지도'},{icon:'booth',label:'부스'},{icon:'music',label:'공연'},{icon:'accessibility',label:'배리어프리'},{icon:'lost',label:'분실물'},{icon:'bell',label:'공지'},{icon:'feedback',label:'피드백'},{icon:'people',label:'만든이들'}].map(it => (
+              <button key={it.label} onClick={() => onNav?.(it.label)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px', background: C.gray50, borderRadius: R.md, border: 'none', cursor: 'pointer' }}>
+                <div style={{ width: 40, height: 40, borderRadius: R.md, background: C.primarySubtle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name={it.icon} size={20} color={C.primary}/></div>
+                <span style={{ fontFamily: DS.font, ...T.label, fontSize: 11, color: C.gray600 }}>{it.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <Divider/>
+        {/* Popular booths */}
+        <div>
+          <SectionHeader title="🔥 인기 부스" action={() => onNav?.('booth')}/>
+          <div style={{ display: 'flex', gap: 12, padding: '0 16px 20px', overflowX: 'auto' }}>
+            {[{title:'문과대 붕어빵',location:'백양로',tags:['음식']},{title:'공대 코딩캠프',location:'한글탑',tags:['체험']},{title:'의대 건강상담',location:'백양로',tags:['상담']}].map((b,i) => (
+              <Card key={i} {...b} badge={i===0?'🔥 1위':i===1?'2위':null} badgeVariant="primary" onClick={() => onNav?.('boothDetail')}/>
+            ))}
+          </div>
+        </div>
+        <Divider/>
+        {/* Today's performance */}
+        <SectionHeader title="🎤 오늘의 공연" action={() => onNav?.('performance')}/>
+        <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[{time:'18:00',name:'오프닝 세레모니',location:'노천극장'},{time:'19:30',name:'LIKELION BAND',location:'백양로 무대'}].map((p,i) => (
+            <div key={i} onClick={() => onNav?.('performanceDetail')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: C.white, borderRadius: R.md, boxShadow: DS.shadow.sm, cursor: 'pointer' }}>
+              <div style={{ width: 48, alignItems: 'center', textAlign: 'center' }}>
+                <span style={{ fontFamily: DS.font, ...T.body1, fontSize: 13, fontWeight: 700, color: C.primary }}>{p.time}</span>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: DS.font, ...T.body1, fontSize: 14, fontWeight: 600, color: C.gray900 }}>{p.name}</div>
+                <LocationChip location={p.location}/>
+              </div>
+              <Icon name="chevronRight" size={16} color={C.gray300}/>
+            </div>
+          ))}
+        </div>
+      </div>
+      <NavBar active="home" onChange={k => { setNav(k); onNav?.(k); }}/>
+    </div>
+  );
+}
+                                                         
 /* ── ICON GRID ── */
 .icon-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 .icon-item {

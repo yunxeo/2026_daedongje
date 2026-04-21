@@ -388,84 +388,6 @@ body {
 }
 .swatch-label { font-size: 10px; color: var(--text-secondary); margin-top: 3px; text-align: center; font-family: monospace; }
   
-/* ── Main Banner / 메인 배너 ── */
-function BannerMain({ onNav }) {
-  const [navActive, setNav] = React.useState('home');
-  const banners = [
-    { title: '2026 연세대학교\n대동제', subtitle: '5월 20일 – 22일 · 백양로', color: `linear-gradient(135deg, ${C.primary} 0%, ${C.secondaryA} 100%)` },
-    { title: '야외 공연장\n오픈!', subtitle: '다채로운 공연을 만나보세요', color: `linear-gradient(135deg, ${C.secondaryB} 0%, ${C.secondaryA} 100%)` },
-  ];
-  const [bannerIdx, setBannerIdx] = React.useState(0);
-  React.useEffect(() => {
-    const t = setInterval(() => setBannerIdx(i => (i + 1) % banners.length), 3000);
-    return () => clearInterval(t);
-  }, []);
-  const b = banners[bannerIdx];
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <StatusBar dark/>
-      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
-        {/* Banner */}
-        <div style={{ height: 240, background: b.color, padding: '24px 20px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', transition: 'background 0.5s' }}>
-          <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 4 }}>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="search" color="white" size={22}/></button>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="bell" color="white" size={22}/></button>
-            <button onClick={() => onNav?.('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="menu" color="white" size={22}/></button>
-          </div>
-          <div style={{ position: 'absolute', top: 20, left: 20 }}>
-            <span style={{ fontFamily: DS.font, fontWeight: 800, fontSize: 18, color: 'white', letterSpacing: '-0.02em' }}>대동제</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontFamily: DS.font, ...T.display, fontSize: 26, color: 'white', whiteSpace: 'pre-line' }}>{b.title}</span>
-            <span style={{ fontFamily: DS.font, ...T.body2, color: 'rgba(255,255,255,0.8)' }}>{b.subtitle}</span>
-          </div>
-          <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
-            {banners.map((_, i) => <div key={i} style={{ width: i === bannerIdx ? 20 : 6, height: 6, borderRadius: 3, background: i === bannerIdx ? 'white' : 'rgba(255,255,255,0.4)', transition: 'width 0.3s' }}/>)}
-          </div>
-        </div>
-        {/* Quick menu */}
-        <div style={{ background: C.white, padding: '20px 16px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-            {[{icon:'map',label:'지도'},{icon:'booth',label:'부스'},{icon:'music',label:'공연'},{icon:'accessibility',label:'배리어프리'},{icon:'lost',label:'분실물'},{icon:'bell',label:'공지'},{icon:'feedback',label:'피드백'},{icon:'people',label:'만든이들'}].map(it => (
-              <button key={it.label} onClick={() => onNav?.(it.label)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px', background: C.gray50, borderRadius: R.md, border: 'none', cursor: 'pointer' }}>
-                <div style={{ width: 40, height: 40, borderRadius: R.md, background: C.primarySubtle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name={it.icon} size={20} color={C.primary}/></div>
-                <span style={{ fontFamily: DS.font, ...T.label, fontSize: 11, color: C.gray600 }}>{it.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        <Divider/>
-        {/* Popular booths */}
-        <div>
-          <SectionHeader title="🔥 인기 부스" action={() => onNav?.('booth')}/>
-          <div style={{ display: 'flex', gap: 12, padding: '0 16px 20px', overflowX: 'auto' }}>
-            {[{title:'문과대 붕어빵',location:'백양로',tags:['음식']},{title:'공대 코딩캠프',location:'한글탑',tags:['체험']},{title:'의대 건강상담',location:'백양로',tags:['상담']}].map((b,i) => (
-              <Card key={i} {...b} badge={i===0?'🔥 1위':i===1?'2위':null} badgeVariant="primary" onClick={() => onNav?.('boothDetail')}/>
-            ))}
-          </div>
-        </div>
-        <Divider/>
-        {/* Today's performance */}
-        <SectionHeader title="🎤 오늘의 공연" action={() => onNav?.('performance')}/>
-        <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {[{time:'18:00',name:'오프닝 세레모니',location:'노천극장'},{time:'19:30',name:'LIKELION BAND',location:'백양로 무대'}].map((p,i) => (
-            <div key={i} onClick={() => onNav?.('performanceDetail')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: C.white, borderRadius: R.md, boxShadow: DS.shadow.sm, cursor: 'pointer' }}>
-              <div style={{ width: 48, alignItems: 'center', textAlign: 'center' }}>
-                <span style={{ fontFamily: DS.font, ...T.body1, fontSize: 13, fontWeight: 700, color: C.primary }}>{p.time}</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: DS.font, ...T.body1, fontSize: 14, fontWeight: 600, color: C.gray900 }}>{p.name}</div>
-                <LocationChip location={p.location}/>
-              </div>
-              <Icon name="chevronRight" size={16} color={C.gray300}/>
-            </div>
-          ))}
-        </div>
-      </div>
-      <NavBar active="home" onChange={k => { setNav(k); onNav?.(k); }}/>
-    </div>
-  );
-}
                                                          
 /* ── ICON GRID ── */
 .icon-grid { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1020,6 +942,373 @@ function switchNav(el) {
     el.appendChild(dot);
   }
 }
+// Screen Components Part 1 - 대동제
+// globals: DS, C, T, R, Icon, StatusBar, TopBar, NavBar, TabBar, Chip, Badge, Btn, LocationChip,
+//          DateCampusSelector, Card, ListItem, Dropdown, FilterRow, WaitBar, Divider, SectionHeader, NoticeItem, Input
+
+/* ── Main Banner / 메인 배너 ── */
+function BannerMain({ onNav }) {
+  const [navActive, setNav] = React.useState('home');
+  const banners = [
+    { title: '2026 연세대학교\n대동제', subtitle: '5월 20일 – 22일 · 백양로', color: `linear-gradient(135deg, ${C.primary} 0%, ${C.secondaryA} 100%)` },
+    { title: '야외 공연장\n오픈!', subtitle: '다채로운 공연을 만나보세요', color: `linear-gradient(135deg, ${C.secondaryB} 0%, ${C.secondaryA} 100%)` },
+  ];
+  const [bannerIdx, setBannerIdx] = React.useState(0);
+  React.useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % banners.length), 3000);
+    return () => clearInterval(t);
+  }, []);
+  const b = banners[bannerIdx];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar dark/>
+      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {/* Banner */}
+        <div style={{ height: 240, background: b.color, padding: '24px 20px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', transition: 'background 0.5s' }}>
+          <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 4 }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="search" color="white" size={22}/></button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="bell" color="white" size={22}/></button>
+            <button onClick={() => onNav?.('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Icon name="menu" color="white" size={22}/></button>
+          </div>
+          <div style={{ position: 'absolute', top: 20, left: 20 }}>
+            <span style={{ fontFamily: DS.font, fontWeight: 800, fontSize: 18, color: 'white', letterSpacing: '-0.02em' }}>대동제</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: DS.font, ...T.display, fontSize: 26, color: 'white', whiteSpace: 'pre-line' }}>{b.title}</span>
+            <span style={{ fontFamily: DS.font, ...T.body2, color: 'rgba(255,255,255,0.8)' }}>{b.subtitle}</span>
+          </div>
+          <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+            {banners.map((_, i) => <div key={i} style={{ width: i === bannerIdx ? 20 : 6, height: 6, borderRadius: 3, background: i === bannerIdx ? 'white' : 'rgba(255,255,255,0.4)', transition: 'width 0.3s' }}/>)}
+          </div>
+        </div>
+        {/* Quick menu */}
+        <div style={{ background: C.white, padding: '20px 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+            {[{icon:'map',label:'지도'},{icon:'booth',label:'부스'},{icon:'music',label:'공연'},{icon:'accessibility',label:'배리어프리'},{icon:'lost',label:'분실물'},{icon:'bell',label:'공지'},{icon:'feedback',label:'피드백'},{icon:'people',label:'만든이들'}].map(it => (
+              <button key={it.label} onClick={() => onNav?.(it.label)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px', background: C.gray50, borderRadius: R.md, border: 'none', cursor: 'pointer' }}>
+                <div style={{ width: 40, height: 40, borderRadius: R.md, background: C.primarySubtle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name={it.icon} size={20} color={C.primary}/></div>
+                <span style={{ fontFamily: DS.font, ...T.label, fontSize: 11, color: C.gray600 }}>{it.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <Divider/>
+        {/* Popular booths */}
+        <div>
+          <SectionHeader title="🔥 인기 부스" action={() => onNav?.('booth')}/>
+          <div style={{ display: 'flex', gap: 12, padding: '0 16px 20px', overflowX: 'auto' }}>
+            {[{title:'문과대 붕어빵',location:'백양로',tags:['음식']},{title:'공대 코딩캠프',location:'한글탑',tags:['체험']},{title:'의대 건강상담',location:'백양로',tags:['상담']}].map((b,i) => (
+              <Card key={i} {...b} badge={i===0?'🔥 1위':i===1?'2위':null} badgeVariant="primary" onClick={() => onNav?.('boothDetail')}/>
+            ))}
+          </div>
+        </div>
+        <Divider/>
+        {/* Today's performance */}
+        <SectionHeader title="🎤 오늘의 공연" action={() => onNav?.('performance')}/>
+        <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[{time:'18:00',name:'오프닝 세레모니',location:'노천극장'},{time:'19:30',name:'LIKELION BAND',location:'백양로 무대'}].map((p,i) => (
+            <div key={i} onClick={() => onNav?.('performanceDetail')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: C.white, borderRadius: R.md, boxShadow: DS.shadow.sm, cursor: 'pointer' }}>
+              <div style={{ width: 48, alignItems: 'center', textAlign: 'center' }}>
+                <span style={{ fontFamily: DS.font, ...T.body1, fontSize: 13, fontWeight: 700, color: C.primary }}>{p.time}</span>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: DS.font, ...T.body1, fontSize: 14, fontWeight: 600, color: C.gray900 }}>{p.name}</div>
+                <LocationChip location={p.location}/>
+              </div>
+              <Icon name="chevronRight" size={16} color={C.gray300}/>
+            </div>
+          ))}
+        </div>
+      </div>
+      <NavBar active="home" onChange={k => { setNav(k); onNav?.(k); }}/>
+    </div>
+  );
+}
+
+/* ── Booth List Screen ── */
+function BoothList({ onNav }) {
+  const [activeDate, setDate] = React.useState('d1');
+  const [activeCampus, setCampus] = React.useState('baekyang');
+  const [activeFilters, setFilters] = React.useState([]);
+  const [sortVal, setSort] = React.useState('popular');
+  const dates = [{key:'d1',day:'수',date:'20'},{key:'d2',day:'목',date:'21'},{key:'d3',day:'금',date:'22'}];
+  const campuses = [{key:'baekyang',label:'백양로'},{key:'hangeul',label:'한글탑'}];
+  const filters = [{key:'food',label:'음식'},{key:'game',label:'게임'},{key:'craft',label:'공예'},{key:'exp',label:'체험'},{key:'photo',label:'포토'}];
+  const booths = [{title:'붕어빵 공장',location:'백양로',tags:['음식'],badge:'인기'},{title:'포토존 스튜디오',location:'백양로',tags:['포토'],badge:null},{title:'퀴즈왕 도전',location:'한글탑',tags:['게임'],badge:'마감임박'},{title:'핸드메이드 가방',location:'백양로',tags:['공예'],badge:null},{title:'VR 체험관',location:'한글탑',tags:['체험'],badge:'NEW'}];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="부스" onSearch={() => {}} />
+      <DateCampusSelector dates={dates} activeDate={activeDate} campuses={campuses} activeCampus={activeCampus} onDateChange={setDate} onCampusChange={setCampus}/>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: C.white, borderBottom: `1px solid ${C.borderDefault}` }}>
+        <FilterRow filters={filters} active={activeFilters} onToggle={k => setFilters(prev => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k])} style={{ padding: 0, flex: 1, background: 'none', border: 'none' }}/>
+        <Dropdown label="정렬" options={[{value:'popular',label:'인기순'},{value:'alpha',label:'가나다순'},{value:'wait',label:'대기적은순'}]} value={sortVal} onChange={setSort}/>
+      </div>
+      <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, alignContent: 'start' }}>
+        {booths.map((b,i) => <Card key={i} {...b} badgeVariant={b.badge==='마감임박'?'error':b.badge==='NEW'?'success':'primary'} onClick={() => onNav?.('boothDetail')}/>)}
+      </div>
+      <NavBar active="booth" onChange={k => onNav?.(k)}/>
+    </div>
+  );
+}
+
+/* ── Booth Detail Screen ── */
+function BoothDetail({ onBack }) {
+  const [waiting, setWaiting] = React.useState(12);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="부스 상세" onBack={onBack} onShare={() => {}}/>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ height: 200, background: `linear-gradient(135deg, ${C.primarySubtle}, ${C.secondaryASubtle})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="booth" size={60} color={C.primary}/>
+        </div>
+        <div style={{ padding: '20px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <LocationChip location="백양로"/>
+            <Badge label="음식" variant="gray"/>
+            <Badge label="🔥 인기" variant="primary"/>
+          </div>
+          <h2 style={{ fontFamily: DS.font, ...T.heading1, color: C.gray900, margin: '0 0 4px' }}>문과대 붕어빵 공장</h2>
+          <p style={{ fontFamily: DS.font, ...T.body2, color: C.gray500, margin: '0 0 16px' }}>신선한 재료로 만드는 따뜻한 붕어빵 🐟</p>
+          <div style={{ display: 'flex', gap: 16, padding: '12px 0', borderTop: `1px solid ${C.borderDefault}`, borderBottom: `1px solid ${C.borderDefault}`, marginBottom: 16 }}>
+            {[{icon:'clock',label:'운영시간',value:'11:00 – 18:00'},{icon:'pin',label:'위치',value:'백양로 A-03'},{icon:'people',label:'오늘 방문',value:'247명'}].map(it => (
+              <div key={it.label} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <Icon name={it.icon} size={18} color={C.gray400}/>
+                <span style={{ fontFamily: DS.font, ...T.label, color: C.gray400 }}>{it.label}</span>
+                <span style={{ fontFamily: DS.font, ...T.body2, fontWeight: 600, color: C.gray800 }}>{it.value}</span>
+              </div>
+            ))}
+          </div>
+          {/* 현재 대기 현황 */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontFamily: DS.font, ...T.heading3, color: C.gray900, marginBottom: 10 }}>현재 대기 현황</div>
+            <WaitBar current={waiting} total={20} label="현재 대기팀"/>
+            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+              <div style={{ flex: 1, padding: 12, background: C.gray50, borderRadius: R.md, textAlign: 'center' }}>
+                <div style={{ fontFamily: DS.font, ...T.display, fontSize: 24, fontWeight: 800, color: C.primary }}>{waiting}</div>
+                <div style={{ fontFamily: DS.font, ...T.caption, color: C.gray400 }}>대기팀 수</div>
+              </div>
+              <div style={{ flex: 1, padding: 12, background: C.gray50, borderRadius: R.md, textAlign: 'center' }}>
+                <div style={{ fontFamily: DS.font, ...T.display, fontSize: 24, fontWeight: 800, color: C.warning }}>{waiting * 5}분</div>
+                <div style={{ fontFamily: DS.font, ...T.caption, color: C.gray400 }}>예상 대기시간</div>
+              </div>
+            </div>
+          </div>
+          {/* Menu */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontFamily: DS.font, ...T.heading3, color: C.gray900, marginBottom: 10 }}>메뉴</div>
+            {[{name:'붕어빵 (3개)',price:'2,000원'},{name:'슈크림 붕어빵 (3개)',price:'2,500원'},{name:'팥 붕어빵 세트',price:'5,000원'}].map((m,i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 2 ? `1px solid ${C.borderDefault}` : 'none' }}>
+                <span style={{ fontFamily: DS.font, ...T.body1, color: C.gray800 }}>{m.name}</span>
+                <span style={{ fontFamily: DS.font, ...T.body1, fontWeight: 600, color: C.gray900 }}>{m.price}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: '12px 16px', background: C.white, borderTop: `1px solid ${C.borderDefault}`, display: 'flex', gap: 8 }}>
+        <Btn label="지도에서 보기" variant="ghost" size="md" icon="map" onClick={() => {}}/>
+        <Btn label="예약하기" variant="primary" size="md" fullWidth onClick={() => {}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── Performance Timetable ── */
+function PerformanceTimetable({ onNav }) {
+  const [activeDate, setDate] = React.useState('d1');
+  const [activeStage, setStage] = React.useState('all');
+  const dates = [{key:'d1',day:'수',date:'20'},{key:'d2',day:'목',date:'21'},{key:'d3',day:'금',date:'22'}];
+  const stages = [{key:'all',label:'전체'},{key:'open',label:'노천극장'},{key:'baek',label:'백양로'},{key:'han',label:'한글탑'}];
+  const timeline = [
+    {time:'15:00',name:'오프닝 세레모니',stage:'노천극장',duration:60,color:C.secondaryB},
+    {time:'16:30',name:'LIKELION BAND',stage:'백양로 무대',duration:90,color:C.primary},
+    {time:'17:00',name:'댄스 동아리 공연',stage:'한글탑',duration:60,color:C.secondaryA},
+    {time:'18:30',name:'버스킹 타임',stage:'백양로 무대',duration:45,color:C.success},
+    {time:'19:00',name:'메인 게스트',stage:'노천극장',duration:120,color:C.secondaryB},
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="공연 타임테이블"/>
+      <DateCampusSelector dates={dates} activeDate={activeDate} onDateChange={setDate}/>
+      <div style={{ display: 'flex', gap: 8, padding: '10px 16px', overflowX: 'auto', borderBottom: `1px solid ${C.borderDefault}`, background: C.white }}>
+        {stages.map(s => <Chip key={s.key} label={s.label} active={s.key === activeStage} onClick={() => setStage(s.key)}/>)}
+      </div>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>
+        {timeline.map((item, i) => (
+          <div key={i} onClick={() => onNav?.('performanceDetail')} style={{ display: 'flex', gap: 12, marginBottom: 12, cursor: 'pointer' }}>
+            <div style={{ width: 48, flexShrink: 0, paddingTop: 4 }}>
+              <span style={{ fontFamily: DS.font, ...T.body2, fontWeight: 700, color: C.gray700, fontSize: 13 }}>{item.time}</span>
+            </div>
+            <div style={{ flex: 1, borderLeft: `3px solid ${item.color}`, paddingLeft: 12, paddingTop: 4, paddingBottom: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                <LocationChip location={item.stage}/>
+                <Badge label={`${item.duration}분`} variant="gray" size="sm"/>
+              </div>
+              <div style={{ fontFamily: DS.font, ...T.body1, fontWeight: 600, color: C.gray900 }}>{item.name}</div>
+            </div>
+            <Icon name="chevronRight" size={16} color={C.gray300} style={{ marginTop: 8 }}/>
+          </div>
+        ))}
+      </div>
+      <NavBar active="performance" onChange={k => onNav?.(k)}/>
+    </div>
+  );
+}
+
+/* ── Performance Detail ── */
+function PerformanceDetail({ onBack }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="공연 상세" onBack={onBack} onShare={() => {}}/>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ height: 200, background: `linear-gradient(135deg, ${C.secondaryB} 0%, ${C.secondaryA} 100%)`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+          <Icon name="music" size={48} color="white"/>
+          <span style={{ fontFamily: DS.font, ...T.label, color: 'rgba(255,255,255,0.8)' }}>MAIN STAGE</span>
+        </div>
+        <div style={{ padding: '20px 16px' }}>
+          <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+            <LocationChip location="노천극장"/>
+            <Badge label="메인 공연" variant="pink"/>
+          </div>
+          <h2 style={{ fontFamily: DS.font, ...T.heading1, color: C.gray900, margin: '0 0 4px' }}>LIKELION BAND 공연</h2>
+          <p style={{ fontFamily: DS.font, ...T.body2, color: C.gray500, margin: '0 0 20px' }}>멋쟁이사자처럼 연세대학교 밴드부의 특별 공연</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '16px', background: C.gray50, borderRadius: R.lg, marginBottom: 20 }}>
+            {[{icon:'clock',label:'공연 시간',value:'2026.05.20 (수) 19:00 – 21:00'},{icon:'pin',label:'공연 장소',value:'연세대학교 노천극장'},{icon:'people',label:'관람 인원',value:'제한 없음 (자유 관람)'}].map(it => (
+              <div key={it.label} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <div style={{ width: 36, height: 36, borderRadius: R.sm, background: C.secondaryBSubtle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name={it.icon} size={16} color={C.secondaryB}/></div>
+                <div>
+                  <div style={{ fontFamily: DS.font, ...T.caption, color: C.gray400 }}>{it.label}</div>
+                  <div style={{ fontFamily: DS.font, ...T.body2, fontWeight: 500, color: C.gray800 }}>{it.value}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontFamily: DS.font, ...T.heading3, color: C.gray900, marginBottom: 8 }}>세트리스트</div>
+            {['오프닝 – 사랑했지만','2. 거짓말 거짓말 거짓말','3. 봄날','4. 앙코르'].map((s,i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: `1px solid ${C.borderDefault}` }}>
+                <span style={{ fontFamily: DS.font, ...T.body2, color: C.gray800 }}>{s}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: 16, background: C.primarySubtle, borderRadius: R.md, display: 'flex', gap: 10 }}>
+            <Icon name="info" size={18} color={C.primary} style={{ marginTop: 1, flexShrink: 0 }}/>
+            <span style={{ fontFamily: DS.font, ...T.caption, color: C.primary }}>우천 시 공연 장소가 변경될 수 있습니다. 공지사항을 확인해 주세요.</span>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: '12px 16px', background: C.white, borderTop: `1px solid ${C.borderDefault}` }}>
+        <Btn label="공연 장소 지도 보기" variant="outline" size="md" icon="map" fullWidth onClick={() => {}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── Map Screen ── */
+function MapScreen({ onNav }) {
+  const [selected, setSelected] = React.useState(null);
+  const pins = [
+    { id: 1, x: 40, y: 35, label: '백양로 A존', type: 'food' },
+    { id: 2, x: 60, y: 55, label: '한글탑 광장', type: 'stage' },
+    { id: 3, x: 25, y: 65, label: '노천극장', type: 'stage' },
+    { id: 4, x: 70, y: 30, label: '백양로 B존', type: 'booth' },
+  ];
+  const typeColors = { food: C.secondaryB, stage: C.primary, booth: C.secondaryA };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="축제 지도" onSearch={() => {}}/>
+      <div style={{ display: 'flex', gap: 8, padding: '10px 16px', overflowX: 'auto', background: C.white, borderBottom: `1px solid ${C.borderDefault}` }}>
+        {[{k:'all',l:'전체'},{k:'food',l:'음식'},{k:'stage',l:'무대'},{k:'booth',l:'부스'},{k:'accessible',l:'배리어프리'}].map(f => <Chip key={f.k} label={f.l} active={f.k==='all'} onClick={() => {}}/>)}
+      </div>
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        {/* Fake map */}
+        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, #e8f0e8 0%, #d4e8d4 100%)', position: 'relative' }}>
+          {/* Paths */}
+          <svg style={{ position: 'absolute', width: '100%', height: '100%' }}>
+            <path d="M 20% 80% Q 40% 40% 80% 20%" stroke="#b0c4b0" strokeWidth="8" fill="none" strokeLinecap="round"/>
+            <path d="M 10% 50% Q 50% 50% 90% 60%" stroke="#b0c4b0" strokeWidth="6" fill="none"/>
+          </svg>
+          {/* Buildings placeholder */}
+          {[[15,20,60,40,'#c8d8c8'],[55,25,50,35,'#c8d8c8'],[20,55,40,30,'#d4e4d4']].map(([l,t,w,h,bg],i) => (
+            <div key={i} style={{ position: 'absolute', left:`${l}%`, top:`${t}%`, width:`${w}px`, height:`${h}px`, background: bg, borderRadius: 4 }}/>
+          ))}
+          {/* Pins */}
+          {pins.map(pin => (
+            <button key={pin.id} onClick={() => setSelected(selected?.id === pin.id ? null : pin)} style={{ position: 'absolute', left: `${pin.x}%`, top: `${pin.y}%`, transform: 'translate(-50%,-100%)', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ background: typeColors[pin.type], color: 'white', borderRadius: 20, padding: '4px 10px', fontFamily: DS.font, fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', boxShadow: DS.shadow.md }}>{pin.label}</div>
+                <div style={{ width: 0, height: 0, borderLeft: '6px solid transparent', borderRight: '6px solid transparent', borderTop: `8px solid ${typeColors[pin.type]}` }}/>
+              </div>
+            </button>
+          ))}
+          {/* My location */}
+          <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }}>
+            <div style={{ width: 16, height: 16, borderRadius: 8, background: C.primary, border: '3px solid white', boxShadow: DS.shadow.md }}/>
+            <div style={{ position: 'absolute', top: -8, left: -8, width: 32, height: 32, borderRadius: 16, background: `${C.primary}30`, animation: 'pulse 2s infinite' }}/>
+          </div>
+        </div>
+        {/* Bottom sheet */}
+        {selected && (
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: C.white, borderRadius: `${R.xl}px ${R.xl}px 0 0`, padding: 20, boxShadow: DS.shadow.lg }}>
+            <div style={{ width: 40, height: 4, borderRadius: 2, background: C.gray100, margin: '0 auto 16px' }}/>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              <LocationChip location={selected.label}/>
+            </div>
+            <div style={{ fontFamily: DS.font, ...T.heading3, color: C.gray900, marginBottom: 4 }}>{selected.label}</div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+              <Btn label="길찾기" variant="outline" size="sm" icon="map" onClick={() => {}}/>
+              <Btn label="상세보기" variant="primary" size="sm" onClick={() => onNav?.('boothDetail')}/>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Venue Map (공연 장소 안내 지도) ── */
+function VenueMap({ onBack }) {
+  const venues = [
+    { name: '노천극장', desc: '메인 무대, 수용 3,000명', color: C.secondaryB },
+    { name: '백양로 무대', desc: '야외 소규모 공연장', color: C.primary },
+    { name: '한글탑 광장', desc: '버스킹 & 소규모 공연', color: C.secondaryA },
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StatusBar/>
+      <TopBar title="공연 장소 안내" onBack={onBack}/>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ height: 220, background: 'linear-gradient(135deg, #e8f0e8 0%, #d4e8d4 100%)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ fontFamily: DS.font, ...T.caption, color: C.gray400 }}>지도 이미지 영역</div>
+          {venues.map((v, i) => (
+            <div key={i} style={{ position: 'absolute', left: `${20+i*28}%`, top: `${30+i*15}%`, background: v.color, color: 'white', borderRadius: 12, padding: '4px 10px', fontFamily: DS.font, fontSize: 11, fontWeight: 700 }}>{v.name}</div>
+          ))}
+        </div>
+        <div style={{ padding: 16 }}>
+          {venues.map((v, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, padding: '16px 0', borderBottom: i < venues.length-1 ? `1px solid ${C.borderDefault}` : 'none' }}>
+              <div style={{ width: 12, height: 12, borderRadius: 6, background: v.color, marginTop: 4, flexShrink: 0 }}/>
+              <div>
+                <div style={{ fontFamily: DS.font, ...T.body1, fontWeight: 600, color: C.gray900 }}>{v.name}</div>
+                <div style={{ fontFamily: DS.font, ...T.caption, color: C.gray400, marginTop: 2 }}>{v.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { BannerMain, BoothList, BoothDetail, PerformanceTimetable, PerformanceDetail, MapScreen, VenueMap });
+
+
+  
 </script>
 </body>
 </html>
